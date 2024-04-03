@@ -11,16 +11,10 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
+import "./plugins/cloudinary.js";
 import fs from "fs";
-import dotenv from 'dotenv'
-
-dotenv.config()
-
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME_CLOUDINARY,
-  api_key: process.env.API_KEY_CLOUDINARY,
-  api_secret: process.env.API_SECRET_CLOUDINARY,
-});
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(fileUpload({ useTempFiles: true }));
