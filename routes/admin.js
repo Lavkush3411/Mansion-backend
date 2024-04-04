@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import {
   Cargos,
   Sweatpants,
@@ -25,7 +26,11 @@ adminRoute.post("/new/cargos", async (req, res) => {
           return url.url;
         })
       );
-      await Cargos.create({ ...req.body, image: urls });
+      await Cargos.create({
+        ...req.body,
+        stock: JSON.parse(req.body.stock),
+        image: urls,
+      });
     }
     //if single file is being sent
     else {
@@ -33,7 +38,13 @@ adminRoute.post("/new/cargos", async (req, res) => {
         folder: "/products/cargos",
         resource_type: "auto",
       });
-      await Cargos.create({ ...req.body, image: [url.url] });
+      await fs.promises.unlink(files.tempFilePath);
+
+      await Cargos.create({
+        ...req.body,
+        stock: JSON.parse(req.body.stock),
+        image: [url.url],
+      });
     }
   } catch (e) {
     console.log(e);
@@ -53,12 +64,12 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
           return url.url;
         })
       );
-      await Sweatpants.create({ ...req.body, image: urls });
+      await Sweatpants.create({ ...req.body,stock: JSON.parse(req.body.stock), image: urls });
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/sweatpants",
       });
-      await Sweatpants.create({ ...req.body, image: [url.url] });
+      await Sweatpants.create({ ...req.body,stock: JSON.parse(req.body.stock), image: [url.url] });
     }
   } catch (e) {
     console.log(e);
@@ -78,13 +89,13 @@ adminRoute.post("/new/tshirts", async (req, res) => {
           return url.url;
         })
       );
-      await Tshirts.create({ ...req.body, image: urls });
+      await Tshirts.create({ ...req.body,stock: JSON.parse(req.body.stock), image: urls });
       res.send({ message: "Tshirt is added" });
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/tshirts",
       });
-      await Tshirts.create({ ...req.body, image: [url.url] });
+      await Tshirts.create({ ...req.body,stock: JSON.parse(req.body.stock), image: [url.url] });
       res.send({ message: "Tshirt is added" });
     }
   } catch (e) {
@@ -104,13 +115,13 @@ adminRoute.post("/new/shirts", async (req, res) => {
           return url.url;
         })
       );
-      await Shirts.create({ ...req.body, image: urls });
+      await Shirts.create({ ...req.body,stock: JSON.parse(req.body.stock), image: urls });
       res.send({ message: "Shirt is added" });
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/shirts",
       });
-      await Shirts.create({ ...req.body, image: [url.url] });
+      await Shirts.create({ ...req.body,stock: JSON.parse(req.body.stock), image: [url.url] });
       res.send({ message: "Shirt is added" });
     }
   } catch (e) {
@@ -132,13 +143,13 @@ adminRoute.post("/new/hoodies", async (req, res) => {
           return url.url;
         })
       );
-      await Hoodies.create({ ...req.body, image: urls });
+      await Hoodies.create({ ...req.body,stock: JSON.parse(req.body.stock), image: urls });
       res.send({ message: "Hoodie is added" });
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/hoodies",
       });
-      await Hoodies.create({ ...req.body, image: [url.url] });
+      await Hoodies.create({ ...req.body,stock: JSON.parse(req.body.stock), image: [url.url] });
       res.send({ message: "Hoodie is added" });
     }
   } catch (e) {

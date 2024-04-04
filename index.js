@@ -11,7 +11,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import "./plugins/cloudinary.js";
-import fs from "fs";
 import dotenv from "dotenv";
 import adminRoute from "./routes/admin.js";
 dotenv.config();
