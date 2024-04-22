@@ -5,7 +5,7 @@ import {
   Hoodies,
   Tshirts,
   Shirts,
-} from "../Database/products.js";
+} from "../model/products.js";
 
 const productRouter = express.Router();
 
