@@ -28,11 +28,21 @@ userRoute.route("/login").post(async (req, res) => {
 });
 
 userRoute.post("/verify", verifyToken, (req, res) => {
-  res.status(200).send("Token Is Verified");
+  if (req.body.valid) {
+    res.status(200).send("Token Is Verified");
+  } else {
+    {
+      res.status(501).send("Token Is Failed");
+    }
+  }
 });
 
 userRoute.post("/verify-admin", verifyToken, verifyAdmin, (req, res) => {
-  res.status(200).send({ isAdmin: req.body.isAdmin });
+  if (req.body.isAdmin) {
+    res.status(200).send({ isAdmin: req.body.isAdmin });
+  } else {
+    res.status(501).send({ isAdmin: req.body.isAdmin });
+  }
 });
 
 export default userRoute;
