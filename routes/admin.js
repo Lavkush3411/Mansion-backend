@@ -15,6 +15,8 @@ adminRoute.post("/new/cargos", async (req, res) => {
   try {
     const files = req.files.image;
     //if multiple files are sent by the server then it will be in array form that can be handled as below
+
+    console.log("We have received Files now uploading to the server");
     if (Array.isArray(files)) {
       const urls = await Promise.all(
         files.map(async (file) => {
@@ -55,6 +57,8 @@ adminRoute.post("/new/cargos", async (req, res) => {
 adminRoute.post("/new/sweatpants", async (req, res) => {
   try {
     const files = req.files.image;
+    console.log("We have received Files now uploading to the server");
+
     if (Array.isArray(files)) {
       const urls = await Promise.all(
         files.map(async (file) => {
@@ -92,6 +96,8 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
 adminRoute.post("/new/tshirts", async (req, res) => {
   try {
     const files = req.files.image;
+    console.log("We have received Files now uploading to the server");
+
     if (Array.isArray(files)) {
       const urls = await Promise.all(
         files.map(async (file) => {
@@ -130,6 +136,8 @@ adminRoute.post("/new/tshirts", async (req, res) => {
 adminRoute.post("/new/shirts", async (req, res) => {
   try {
     const files = req.files.image;
+    console.log("We have received Files now uploading to the server");
+
     if (Array.isArray(files)) {
       const urls = await Promise.all(
         files.map(async (file) => {
@@ -168,6 +176,8 @@ adminRoute.post("/new/shirts", async (req, res) => {
 adminRoute.post("/new/hoodies", async (req, res) => {
   try {
     const files = req.files.image;
+    console.log("We have received Files now uploading to the server");
+
     if (Array.isArray(files)) {
       const urls = await Promise.all(
         files.map(async (file) => {
