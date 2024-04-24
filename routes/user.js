@@ -21,7 +21,6 @@ userRoute.route("/login").post(async (req, res) => {
     if (!user) throw { msg: "No User Found" };
     const { _id, __v, ...data } = user._doc;
     console.log("received login request", data);
-    console.log("genrateToken", genrateToken(data));
     res.json({ Token: genrateToken(data) });
   } catch (e) {
     res.status(404).send();
