@@ -1,1 +1,7 @@
-console.log("this is a test file");
+const key = {key:"lock"};
+
+const obj = {
+  key: [key.key],
+};
+
+console.log(obj);

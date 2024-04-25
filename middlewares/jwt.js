@@ -14,7 +14,6 @@ function genrateToken(data) {
 function verifyToken(req, res, next) {
   try {
     const tokenIsValid = jwt.verify(req.body.Token, process.env.JWT_KEY);
-    console.log(tokenIsValid);
     req.body.valid = true;
     next();
   } catch (JsonWebTokenError) {

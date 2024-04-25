@@ -50,8 +50,9 @@ adminRoute.post("/new/cargos", async (req, res) => {
     }
   } catch (e) {
     console.log(e);
+    res.json({ msg: e });
   }
-  res.send({ message: "Cargo is added" });
+  res.send({ msg: "Cargo is added" });
 });
 
 adminRoute.post("/new/sweatpants", async (req, res) => {
@@ -89,8 +90,9 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
     }
   } catch (e) {
     console.log(e);
+    res.json({ msg: e });
   }
-  res.send({ message: "Sweatpants is added" });
+  res.send({ msg: "Sweatpants is added" });
 });
 
 adminRoute.post("/new/tshirts", async (req, res) => {
@@ -114,7 +116,7 @@ adminRoute.post("/new/tshirts", async (req, res) => {
         stock: JSON.parse(req.body.stock),
         image: urls,
       });
-      res.send({ message: "Tshirt is added" });
+      res.send({ msg: "Tshirt is added" });
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/tshirts",
@@ -126,10 +128,11 @@ adminRoute.post("/new/tshirts", async (req, res) => {
         stock: JSON.parse(req.body.stock),
         image: [url.url],
       });
-      res.send({ message: "Tshirt is added" });
+      res.send({ msg: "Tshirt is added" });
     }
   } catch (e) {
     console.log(e);
+    res.json({ msg: e });
   }
 });
 
@@ -166,10 +169,11 @@ adminRoute.post("/new/shirts", async (req, res) => {
         stock: JSON.parse(req.body.stock),
         image: [url.url],
       });
-      res.send({ message: "Shirt is added" });
+      res.send({ msg: "Shirt is added" });
     }
   } catch (e) {
     console.log(e);
+    res.json({ msg: e });
   }
 });
 
@@ -194,7 +198,7 @@ adminRoute.post("/new/hoodies", async (req, res) => {
         stock: JSON.parse(req.body.stock),
         image: urls,
       });
-      res.send({ message: "Hoodie is added" });
+      res.json({ msg: "Hoodie is added" });
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/hoodies",
@@ -206,11 +210,11 @@ adminRoute.post("/new/hoodies", async (req, res) => {
         stock: JSON.parse(req.body.stock),
         image: [url.url],
       });
-      res.send({ message: "Hoodie is added" });
+      res.json({ msg: "Hoodie is added" });
     }
   } catch (e) {
     console.log(e);
-    res.send({ e: e });
+    res.json({ msg: e });
   }
 });
 
