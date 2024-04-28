@@ -42,14 +42,14 @@ userRoute.route("/login").post(async (req, res) => {
       .update(password)
       .digest("hex");
 
-    if (!user) throw { msg: "No User Found" };
-    if (user.password !== hashedPassword) throw { msg: "Incorrect Password" };
+    if (!user) throw { msg: "NonExistingError" };
+    if (user.password !== hashedPassword) throw { msg: "WrongPasswordError" };
     const { _id, __v, ...data } = user._doc;
     res
       .status(200)
       .json({ Token: genrateToken(data), msg: "Login Successfull" });
-  } catch (e) {
-    res.status(404).json({ msg: e.msg });
+  } catch (err) {
+    res.status(404).json({ msg: err.msg });
   }
 });
 
