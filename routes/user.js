@@ -93,7 +93,7 @@ userRoute.post("/password-reset-otp", async (req, res) => {
       throw { status: 401, msg: "User Not Found" };
     }
   } catch (e) {
-    return res.status(e.status).json({ msg: e.msg });
+    return res.status(e.status).json({ msg: e.msg, err: e.error });
   }
 });
 
