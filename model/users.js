@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const UserSchema = {
+const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: {
     type: String,
@@ -14,8 +14,9 @@ const UserSchema = {
     required: true,
   },
   isAdmin: { type: Boolean, default: false },
-};
+});
 
+// UserSchema.index({ email: 1 });
 const User = new mongoose.model("User", UserSchema);
 
 export default User;
