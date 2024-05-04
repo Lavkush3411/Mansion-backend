@@ -27,6 +27,7 @@ export default async function sendEmail(to) {
       if (err) {
         reject({
           status: 400,
+          error: err,
           msg: "Some Error Encountered While Sending OTP",
         });
       }
