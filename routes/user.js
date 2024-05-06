@@ -59,7 +59,7 @@ userRoute.post("/verify", verifyToken, (req, res) => {
     }
   }
 });
-
+ 
 userRoute.post("/verify-admin", verifyToken, verifyAdmin, (req, res) => {
   if (req.body.isAdmin) {
     res.status(200).send({ isAdmin: req.body.isAdmin, msg: "Verified Admin" });
