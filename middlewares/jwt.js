@@ -12,6 +12,7 @@ function genrateToken(data) {
 
 function verifyToken(req, res, next) {
   const token = req.cookies.token;
+  if (!token) return res.status(401).send("Invalid Token");
   try {
     jwt.verify(token, process.env.JWT_KEY);
     req.body.valid = true;

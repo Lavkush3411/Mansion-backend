@@ -49,7 +49,7 @@ userRoute.route("/login").post(async (req, res) => {
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        // secure: true,
+        secure: true,
       })
       .json({ user: data, msg: "Login Successfull" });
   } catch (err) {
@@ -59,7 +59,9 @@ userRoute.route("/login").post(async (req, res) => {
 
 userRoute.get("/logout", (req, res) => {
   console.log("this route accessed");
-  res.clearCookie("token").json({ msg: "logged Out" });
+  res
+    .clearCookie("token", { httpOnly: true, secure: true })
+    .json({ msg: "logged Out" });
 });
 
 userRoute.get("/verify", verifyToken, (req, res) => {
