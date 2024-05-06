@@ -4,16 +4,16 @@ dotenv.config();
 
 function genrateToken(data) {
   try {
-    const { password, ...datanew } = data;
-    return jwt.sign(datanew, process.env.JWT_KEY);
+    return jwt.sign(data, process.env.JWT_KEY);
   } catch (e) {
     console.log(e);
   }
 }
 
 function verifyToken(req, res, next) {
+  const token = req.cookies.token;
   try {
-    const tokenIsValid = jwt.verify(req.body.Token, process.env.JWT_KEY);
+    jwt.verify(token, process.env.JWT_KEY);
     req.body.valid = true;
     next();
   } catch (JsonWebTokenError) {

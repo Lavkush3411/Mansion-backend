@@ -35,22 +35,34 @@ userRoute.route("/create").post((req, res) => {
 });
 
 userRoute.route("/login").post(async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password: pass } = req.body;
   try {
+    const hashedPassword = createHashedString(pass);
     const user = await User.findOne({ email });
-    const hashedPassword = createHashedString(password);
+    console.log("login route accessed");
     if (!user) throw { msg: "NonExistingError" };
     if (user.password !== hashedPassword) throw { msg: "WrongPasswordError" };
-    const { _id, __v, ...data } = user._doc;
+    const { _id, __v, password, ...data } = user._doc;
+    console.log(data);
+    const token = genrateToken(data);
     res
       .status(200)
-      .json({ Token: genrateToken(data), msg: "Login Successfull" });
+      .cookie("token", token, {
+        httpOnly: true,
+        // secure: true,
+      })
+      .json({ user: data, msg: "Login Successfull" });
   } catch (err) {
     res.status(404).json({ msg: err.msg });
   }
 });
 
-userRoute.post("/verify", verifyToken, (req, res) => {
+userRoute.get("/logout", (req, res) => {
+  console.log("this route accessed");
+  res.clearCookie("token").json({ msg: "logged Out" });
+});
+
+userRoute.get("/verify", verifyToken, (req, res) => {
   if (req.body.valid) {
     res.status(200).json({ msg: "User Is Verified" });
   } else {
@@ -60,7 +72,7 @@ userRoute.post("/verify", verifyToken, (req, res) => {
   }
 });
 
-userRoute.post("/verify-admin", verifyToken, verifyAdmin, (req, res) => {
+userRoute.get("/verify-admin", verifyToken, verifyAdmin, (req, res) => {
   if (req.body.isAdmin) {
     res.status(200).send({ isAdmin: req.body.isAdmin, msg: "Verified Admin" });
   } else {

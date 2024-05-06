@@ -9,6 +9,15 @@ import {
 
 const productRouter = express.Router();
 
+const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
+
+productRouter.get("/all", async (req, res) => {
+  let allProducts = await Promise.all(
+    productList.reduce((prev, current) => prev.concat(current.find()), [])
+  );
+  res.send(allProducts.flat());
+});
+
 productRouter.get("/sweatpants", async (req, res) => {
   const data = await Sweatpants.find();
   res.send(data);
