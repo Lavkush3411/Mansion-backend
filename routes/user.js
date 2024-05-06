@@ -51,8 +51,8 @@ userRoute.route("/login").post(async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
-        domain: "vercel.app",
-        path: "/",
+        // domain: "vercel.app",
+        // path: "/",
       })
       .json({ user: data, msg: "Login Successfull" });
   } catch (err) {
@@ -67,8 +67,8 @@ userRoute.get("/logout", (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      path: "/",
-      domain: "vercel.app",
+      // path: "/",
+      // domain: "vercel.app",
     })
     .json({ msg: "logged Out" });
 });
