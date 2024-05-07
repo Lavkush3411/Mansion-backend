@@ -220,6 +220,12 @@ adminRoute.post("/new/hoodies", async (req, res) => {
 });
 
 // getting product data
+const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
+
+adminRoute.post("/post/all", async (req, res) => {
+  const alldata = await Promise.all(productList.map((item) => item.find()));
+  res.send(alldata.flat());
+});
 
 adminRoute.post("/post/:product", async (req, res) => {
   const product = req.params.product;
