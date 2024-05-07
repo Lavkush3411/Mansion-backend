@@ -8,6 +8,7 @@ import {
   Shirts,
 } from "../model/products.js";
 import { v2 as cloudinary } from "cloudinary";
+import mongoose from "mongoose";
 
 const adminRoute = express.Router();
 
@@ -220,32 +221,14 @@ adminRoute.post("/new/hoodies", async (req, res) => {
 
 // getting product data
 
-adminRoute.get("/get/cargos", async (req, res) => {
-  const data = await Cargos.find();
-
-  res.send(data);
+adminRoute.post("/post/:product", async (req, res) => {
+  const product = req.params.product;
+  if (product) {
+    const Product = mongoose.model(product);
+    const data = await Product.find();
+    res.send(data);
+  } else {
+    res.send([]);
+  }
 });
-
-adminRoute.get("/get/sweatpants", async (req, res) => {
-  const data = await Sweatpants.find();
-
-  res.send(data);
-});
-
-adminRoute.get("/get/shirts", async (req, res) => {
-  const data = await Shirts.find();
-  res.send(data);
-});
-
-adminRoute.get("/get/tshirts", async (req, res) => {
-  const data = await Tshirts.find();
-
-  res.send(data);
-});
-
-adminRoute.get("/get/hoodies", async (req, res) => {
-  const data = await Hoodies.find();
-  res.send(data);
-});
-
 export default adminRoute;

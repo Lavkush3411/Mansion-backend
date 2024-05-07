@@ -12,9 +12,15 @@ function genrateToken(data) {
 }
 
 function verifyToken(req, res, next) {
+  const token = req.body.Token;
+  if (!token) {
+    res.status(501).send({ msg: "Token is required" });
+    return;
+  }
   try {
-    const tokenIsValid = jwt.verify(req.body.Token, process.env.JWT_KEY);
+    jwt.verify(token, process.env.JWT_KEY);
     req.body.valid = true;
+
     next();
   } catch (JsonWebTokenError) {
     console.log(JsonWebTokenError);
