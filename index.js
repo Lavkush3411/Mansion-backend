@@ -13,7 +13,7 @@ import { verifyAdmin } from "./middlewares/verifyAdmin.js";
 dotenv.config();
 
 const app = express();
-app.use(fileUpload({ useTempFiles: true }));
+app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
