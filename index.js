@@ -17,14 +17,14 @@ app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
-const corsOptions = {
-  origin: "https://mansionstreetwear.netlify.app", // Replace with your client URL
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true, // If you need to send cookies or authentication headers
-  optionsSuccessStatus: 204, // Some legacy browsers choke on 204
-};
+// const corsOptions = {
+//   origin: "https://mansionstreetwear.netlify.app", // Replace with your client URL
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true, // If you need to send cookies or authentication headers
+//   optionsSuccessStatus: 204, // Some legacy browsers choke on 204
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 app.use(cors());
 
