@@ -26,7 +26,7 @@ adminRoute.post("/new/cargos", async (req, res) => {
             resource_type: "auto",
           });
           fs.unlinkSync(file.tempFilePath);
-          return url.url;
+          return url.secure_url;
         })
       );
       await Cargos.create({
@@ -46,7 +46,7 @@ adminRoute.post("/new/cargos", async (req, res) => {
       await Cargos.create({
         ...req.body,
         stock: JSON.parse(req.body.stock),
-        image: [url.url],
+        image: [url.secure_url],
       });
     }
   } catch (e) {
@@ -69,7 +69,7 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
           });
           fs.unlinkSync(file.tempFilePath);
 
-          return url.url;
+          return url.secure_url;
         })
       );
       await Sweatpants.create({
@@ -86,7 +86,7 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
       await Sweatpants.create({
         ...req.body,
         stock: JSON.parse(req.body.stock),
-        image: [url.url],
+        image: [url.secure_url],
       });
     }
   } catch (e) {
@@ -109,7 +109,7 @@ adminRoute.post("/new/tshirts", async (req, res) => {
           });
           fs.unlinkSync(file.tempFilePath);
 
-          return url.url;
+          return url.secure_url;
         })
       );
       await Tshirts.create({
@@ -127,7 +127,7 @@ adminRoute.post("/new/tshirts", async (req, res) => {
       await Tshirts.create({
         ...req.body,
         stock: JSON.parse(req.body.stock),
-        image: [url.url],
+        image: [url.secure_url],
       });
       res.send({ msg: "Tshirt is added" });
     }
@@ -150,7 +150,7 @@ adminRoute.post("/new/shirts", async (req, res) => {
           });
           fs.unlinkSync(file.tempFilePath);
 
-          return url.url;
+          return url.secure_url;
         })
       );
       await Shirts.create({
@@ -168,7 +168,7 @@ adminRoute.post("/new/shirts", async (req, res) => {
       await Shirts.create({
         ...req.body,
         stock: JSON.parse(req.body.stock),
-        image: [url.url],
+        image: [url.secure_url],
       });
       res.send({ msg: "Shirt is added" });
     }
@@ -191,7 +191,7 @@ adminRoute.post("/new/hoodies", async (req, res) => {
           });
           fs.unlinkSync(file.tempFilePath);
 
-          return url.url;
+          return url.secure_url;
         })
       );
       await Hoodies.create({
@@ -209,7 +209,7 @@ adminRoute.post("/new/hoodies", async (req, res) => {
       await Hoodies.create({
         ...req.body,
         stock: JSON.parse(req.body.stock),
-        image: [url.url],
+        image: [url.secure_url],
       });
       res.json({ msg: "Hoodie is added" });
     }
