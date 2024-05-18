@@ -9,8 +9,14 @@ import {
 } from "../model/products.js";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
+import deleteProduct from "../controllers/deleteProduct.js";
 
 const adminRoute = express.Router();
+
+adminRoute.delete("/delete/:type", (req,res)=>deleteProduct(req,res,req.params.type));
+
+
+
 
 adminRoute.post("/new/cargos", async (req, res) => {
   try {

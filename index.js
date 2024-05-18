@@ -10,6 +10,7 @@ import productRouter from "./routes/product.js";
 import userRoute from "./routes/user.js";
 import { verifyToken } from "./middlewares/jwt.js";
 import { verifyAdmin } from "./middlewares/verifyAdmin.js";
+import test from "./test.js";
 dotenv.config();
 
 const app = express();
@@ -27,9 +28,11 @@ app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 // app.use(cors(corsOptions));
 
 app.use(cors());
-
+// because users cannot delete products only admin can delete
 app.use("/get", productRouter);
 app.use("/admin", verifyToken, verifyAdmin, adminRoute);
 app.use("/user", userRoute);
+
+app.use("/test",test)
 
 app.listen(3000, () => console.log("server is running on port 3000"));
