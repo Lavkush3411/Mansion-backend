@@ -229,7 +229,7 @@ adminRoute.post("/new/hoodies", async (req, res) => {
 const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
 
 adminRoute.post("/post/all", async (req, res) => {
-  const alldata = await Promise.all(productList.map((item) => item.find()));
+  const alldata = await Promise.all(productList.map((item) => item.find().lean()));
   res.send(alldata.flat());
 });
 
@@ -237,7 +237,7 @@ adminRoute.post("/post/:product", async (req, res) => {
   const product = req.params.product;
   if (product) {
     const Product = mongoose.model(product);
-    const data = await Product.find();
+    const data = await Product.find().lean();
     res.send(data);
   } else {
     res.send([]);
