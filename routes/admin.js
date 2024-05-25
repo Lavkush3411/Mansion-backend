@@ -13,10 +13,9 @@ import deleteProduct from "../controllers/deleteProduct.js";
 
 const adminRoute = express.Router();
 
-adminRoute.delete("/delete/:type", (req,res)=>deleteProduct(req,res,req.params.type));
-
-
-
+adminRoute.delete("/delete/:type", (req, res) =>
+  deleteProduct(req, res, req.params.type)
+);
 
 adminRoute.post("/new/cargos", async (req, res) => {
   try {
@@ -30,6 +29,7 @@ adminRoute.post("/new/cargos", async (req, res) => {
           const url = await cloudinary.uploader.upload(file.tempFilePath, {
             folder: "/products/cargos",
             resource_type: "auto",
+            format: "webp",
           });
           fs.unlinkSync(file.tempFilePath);
           return url.secure_url;
@@ -46,6 +46,7 @@ adminRoute.post("/new/cargos", async (req, res) => {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/cargos",
         resource_type: "auto",
+        format: "webp",
       });
       fs.unlinkSync(files.tempFilePath);
 
@@ -72,6 +73,7 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
         files.map(async (file) => {
           const url = await cloudinary.uploader.upload(file.tempFilePath, {
             folder: "/products/sweatpants",
+            format: "webp",
           });
           fs.unlinkSync(file.tempFilePath);
 
@@ -86,6 +88,7 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/sweatpants",
+        format: "webp",
       });
       fs.unlinkSync(files.tempFilePath);
 
@@ -112,6 +115,7 @@ adminRoute.post("/new/tshirts", async (req, res) => {
         files.map(async (file) => {
           const url = await cloudinary.uploader.upload(file.tempFilePath, {
             folder: "/products/tshirts",
+            format: "webp",
           });
           fs.unlinkSync(file.tempFilePath);
 
@@ -127,6 +131,7 @@ adminRoute.post("/new/tshirts", async (req, res) => {
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/tshirts",
+        format: "webp",
       });
       fs.unlinkSync(files.tempFilePath);
 
@@ -153,6 +158,7 @@ adminRoute.post("/new/shirts", async (req, res) => {
         files.map(async (file) => {
           const url = await cloudinary.uploader.upload(file.tempFilePath, {
             folder: "/products/shirts",
+            format: "webp",
           });
           fs.unlinkSync(file.tempFilePath);
 
@@ -168,6 +174,7 @@ adminRoute.post("/new/shirts", async (req, res) => {
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/shirts",
+        format: "webp",
       });
       fs.unlinkSync(files.tempFilePath);
 
@@ -194,6 +201,7 @@ adminRoute.post("/new/hoodies", async (req, res) => {
         files.map(async (file) => {
           const url = await cloudinary.uploader.upload(file.tempFilePath, {
             folder: "/products/hoodies",
+            format: "webp",
           });
           fs.unlinkSync(file.tempFilePath);
 
@@ -209,6 +217,7 @@ adminRoute.post("/new/hoodies", async (req, res) => {
     } else {
       const url = await cloudinary.uploader.upload(files.tempFilePath, {
         folder: "/products/hoodies",
+        format: "webp",
       });
       fs.unlinkSync(files.tempFilePath);
 
@@ -229,7 +238,9 @@ adminRoute.post("/new/hoodies", async (req, res) => {
 const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
 
 adminRoute.post("/post/all", async (req, res) => {
-  const alldata = await Promise.all(productList.map((item) => item.find().lean()));
+  const alldata = await Promise.all(
+    productList.map((item) => item.find().lean())
+  );
   res.send(alldata.flat());
 });
 
