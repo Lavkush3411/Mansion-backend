@@ -28,7 +28,7 @@ test.post("/buy", async (req, res) => {
     merchantUserId: "MUID123d",
     amount: 10000,
     redirectUrl: process.env.BACKEND_HOME_URL + "/test/status",
-    redirectMode: "REDIRECT",
+    redirectMode: "POST",
     callbackUrl: process.env.BACKEND_HOME_URL + "/test/status",
     mobileNumber: "9999999999",
     paymentInstrument: {
