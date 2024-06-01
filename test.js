@@ -59,7 +59,9 @@ test.post("/buy", async (req, res) => {
     .request(options)
     .then(function (response) {
       console.log(response.data);
-      res.redirect(response.data.data.instrumentResponse.redirectInfo.url);
+      res
+        .json({ url: response.data.data.instrumentResponse.redirectInfo.url })
+        .status(200);
     })
     .catch(function (error) {
       console.error(error);
