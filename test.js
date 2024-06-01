@@ -1,5 +1,6 @@
 import express from "express";
 import fs from "fs";
+import axios from "axios";
 import {
   Cargos,
   Sweatpants,
@@ -10,11 +11,65 @@ import {
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import deleteProduct from "./controllers/deleteProduct.js";
+import createHashedString from "./utils/createHash.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const test = express.Router();
 test.delete("/delete:type", async (req, res) =>
   deleteProduct(req, res, req.params.type)
 );
+
+test.post("/buy", async (req, res) => {
+  const phonePayEndPoint = "/pg/v1/pay";
+  const payLoad = {
+    merchantId: "PGTESTPAYUAT86",
+    merchantTransactionId: "MT7850590068188104d",
+    merchantUserId: "MUID123d",
+    amount: 10000,
+    redirectUrl: process.env.BACKEND_HOME_URL,
+    redirectMode: "REDIRECT",
+    callbackUrl: process.env.BACKEND_HOME_URL,
+    mobileNumber: "9999999999",
+    paymentInstrument: {
+      type: "PAY_PAGE",
+    },
+  };
+
+  const base64Payload = Buffer.from(JSON.stringify(payLoad)).toString("base64");
+  const checksum =
+    createHashedString(
+      base64Payload + phonePayEndPoint + process.env.PHONEPAY_SALT_KEY
+    ) +
+    "###" +
+    process.env.PHONEPAY_SALT_INDEX;
+
+  const options = {
+    method: "post",
+    url: "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
+    headers: {
+      "Content-Type": "application/json",
+      "X-VERIFY": checksum,
+    },
+    data: {
+      request: base64Payload,
+    },
+  };
+  axios
+    .request(options)
+    .then(function (response) {
+      console.log(response.data);
+      res.redirect(response.data.data.instrumentResponse.redirectInfo.url);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+});
+
+test.post("/status", (req, res) => {
+  console.log("status is verified");
+  res.redirect(process.env.FRONEND_HOME_URL);
+});
 
 // test.delete("/delete/cargos", async (req, res) => {
 //   const { id } = req.body;

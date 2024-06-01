@@ -25,6 +25,11 @@ app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 //   optionsSuccessStatus: 204, // Some legacy browsers choke on 204
 // };
 
+// const corsOptions = {
+//   origin: "http://localhost:5173/",
+//   optionsSuccessStatus: 200,
+// };
+
 // app.use(cors(corsOptions));
 
 app.use(cors());
@@ -33,6 +38,6 @@ app.use("/get", productRouter);
 app.use("/admin", verifyToken, verifyAdmin, adminRoute);
 app.use("/user", userRoute);
 
-app.use("/test",test)
+app.use("/test", test);
 
 app.listen(3000, () => console.log("server is running on port 3000"));
