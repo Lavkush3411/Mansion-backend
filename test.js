@@ -27,9 +27,9 @@ test.post("/buy", async (req, res) => {
     merchantTransactionId: "MT7850590068188104d",
     merchantUserId: "MUID123d",
     amount: 10000,
-    redirectUrl: process.env.BACKEND_HOME_URL,
+    redirectUrl: process.env.BACKEND_HOME_URL + "/test/status",
     redirectMode: "REDIRECT",
-    callbackUrl: process.env.BACKEND_HOME_URL,
+    callbackUrl: process.env.BACKEND_HOME_URL + "/test/status",
     mobileNumber: "9999999999",
     paymentInstrument: {
       type: "PAY_PAGE",
