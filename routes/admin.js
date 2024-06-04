@@ -109,6 +109,9 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.json({ msg: e });
+  } finally {
+    cache.del("all");
+    cacheData();
   }
   res.send({ msg: "Sweatpants is added" });
 });
@@ -153,6 +156,9 @@ adminRoute.post("/new/tshirts", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.json({ msg: e });
+  } finally {
+    cache.del("all");
+    cacheData();
   }
 });
 
@@ -196,6 +202,9 @@ adminRoute.post("/new/shirts", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.json({ msg: e });
+  } finally {
+    cache.del("all");
+    cacheData();
   }
 });
 
@@ -239,6 +248,9 @@ adminRoute.post("/new/hoodies", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.json({ msg: e });
+  } finally {
+    cache.del("all");
+    cacheData();
   }
 });
 
