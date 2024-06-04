@@ -10,12 +10,17 @@ import {
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import deleteProduct from "../controllers/deleteProduct.js";
+import cache, { cacheData } from "../utils/cache.js";
 
 const adminRoute = express.Router();
 
-adminRoute.delete("/delete/:type", (req, res) =>
-  deleteProduct(req, res, req.params.type)
-);
+adminRoute.delete("/delete/:type", async (req, res) => {
+  await deleteProduct(req, res, req.params.type);
+  cache.del(req.params.type);
+  console.log(req.params.type);
+  cache.del("all");
+  cacheData();
+});
 
 adminRoute.post("/new/cargos", async (req, res) => {
   try {
@@ -59,6 +64,9 @@ adminRoute.post("/new/cargos", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.json({ msg: e });
+  } finally {
+    cache.del("all");
+    cacheData();
   }
   res.send({ msg: "Cargo is added" });
 });

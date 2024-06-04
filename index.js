@@ -11,6 +11,7 @@ import userRoute from "./routes/user.js";
 import { verifyToken } from "./middlewares/jwt.js";
 import { verifyAdmin } from "./middlewares/verifyAdmin.js";
 import test from "./test.js";
+import "./utils/cache.js";
 dotenv.config();
 
 const app = express();

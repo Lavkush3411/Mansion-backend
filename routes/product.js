@@ -6,20 +6,24 @@ import {
   Tshirts,
   Shirts,
 } from "../model/products.js";
+import cache from "../utils/cache.js";
 
 const productRouter = express.Router();
 
 const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
 
-let alldata;
-
-// setInterval(() => {}, interval);
-
 productRouter.get("/all", async (req, res) => {
+  const cachedData = cache.get("all");
+  if (cachedData) {
+    res.send(cachedData);
+    return;
+  }
   const alldata = await Promise.all(
     productList.map((item) => item.find().lean())
   );
-  res.send(alldata.flat());
+  const data = alldata.flat();
+  cache.set("all", data);
+  res.send(data);
 });
 
 productRouter.get("/sweatpants", async (req, res) => {
