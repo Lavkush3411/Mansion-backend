@@ -15,15 +15,17 @@ const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
 productRouter.get("/all", async (req, res) => {
   const cachedData = cache.get("all");
   if (cachedData) {
+    console.log("cached data");
     res.send(cachedData);
     return;
   }
+
   const alldata = await Promise.all(
     productList.map((item) => item.find().lean())
   );
   const data = alldata.flat();
-  cache.set("all", data);
   res.send(data);
+  cache.set("all", data);
 });
 
 productRouter.get("/sweatpants", async (req, res) => {

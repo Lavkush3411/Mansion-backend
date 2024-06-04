@@ -8,7 +8,7 @@ import {
 } from "../model/products.js";
 const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
 
-const cache = new NodeCache({ stdTTL: 60 * 32 });
+const cache = new NodeCache({ stdTTL: Infinity });
 async function cacheData() {
   cache.flushAll();
   const alldata = await Promise.all(
@@ -20,6 +20,6 @@ async function cacheData() {
 
 cacheData();
 
-setInterval(cacheData, 30 * 1000 * 60);
+// setInterval(cacheData, 30 * 1000 * 60);
 export { cacheData };
 export default cache;
