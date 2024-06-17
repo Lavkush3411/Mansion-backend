@@ -1,15 +1,15 @@
 import {
   Cargos,
-  Sweatpants,
   Hoodies,
   Tshirts,
   Shirts,
+  Bottoms,
 } from "../model/products.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const typeObj = {
   cargos: Cargos,
-  sweatpants: Sweatpants,
+  bottoms: Bottoms,
   hoodies: Hoodies,
   tshirts: Tshirts,
   shirts: Shirts,

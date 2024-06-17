@@ -1,12 +1,12 @@
 import NodeCache from "node-cache";
 import {
   Cargos,
-  Sweatpants,
   Hoodies,
   Tshirts,
   Shirts,
+  Bottoms,
 } from "../model/products.js";
-const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
+const productList = [Cargos, Bottoms, Hoodies, Tshirts, Shirts];
 
 const cache = new NodeCache({ stdTTL: 0 });
 async function cacheData() {

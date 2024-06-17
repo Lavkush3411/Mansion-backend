@@ -1,7 +1,7 @@
 import express from "express";
 import {
   Cargos,
-  Sweatpants,
+  Bottoms,
   Hoodies,
   Tshirts,
   Shirts,
@@ -10,7 +10,7 @@ import cache from "../utils/cache.js";
 
 const productRouter = express.Router();
 
-const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
+const productList = [Cargos, Bottoms, Hoodies, Tshirts, Shirts];
 
 productRouter.get("/all", async (req, res) => {
   const cachedData = cache.get("all");
@@ -28,8 +28,8 @@ productRouter.get("/all", async (req, res) => {
   cache.set("all", data);
 });
 
-productRouter.get("/sweatpants", async (req, res) => {
-  const data = await Sweatpants.find().lean();
+productRouter.get("/bottoms", async (req, res) => {
+  const data = await Bottoms.find().lean();
   res.send(data);
 });
 
@@ -48,6 +48,7 @@ productRouter.get("/shirts", async (req, res) => {
 });
 productRouter.get("/hoodies", async (req, res) => {
   const data = await Hoodies.find().lean();
+  console.log(data);
   res.send(data);
 });
 export default productRouter;

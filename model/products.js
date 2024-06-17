@@ -15,9 +15,9 @@ const productSchema = new mongoose.Schema({
 });
 
 const Cargos = mongoose.model("cargo", productSchema);
-const Sweatpants = mongoose.model("sweatpant", productSchema);
+const Bottoms = mongoose.model("bottom", productSchema);
 const Shirts = mongoose.model("shirt", productSchema);
 const Tshirts = mongoose.model("tshirt", productSchema);
 const Hoodies = mongoose.model("hoodie", productSchema);
 
-export { Cargos, Sweatpants, Shirts, Tshirts, Hoodies };
+export { Cargos, Bottoms, Shirts, Tshirts, Hoodies };

@@ -1,13 +1,7 @@
 import express from "express";
 import fs from "fs";
 import axios from "axios";
-import {
-  Cargos,
-  Sweatpants,
-  Hoodies,
-  Tshirts,
-  Shirts,
-} from "./model/products.js";
+import { Cargos, Bottoms, Hoodies, Tshirts, Shirts } from "./model/products.js";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import deleteProduct from "./controllers/deleteProduct.js";

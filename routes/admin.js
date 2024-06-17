@@ -2,7 +2,7 @@ import express from "express";
 import fs from "fs";
 import {
   Cargos,
-  Sweatpants,
+  Bottoms,
   Hoodies,
   Tshirts,
   Shirts,
@@ -71,7 +71,7 @@ adminRoute.post("/new/cargos", async (req, res) => {
   res.send({ msg: "Cargo is added" });
 });
 
-adminRoute.post("/new/sweatpants", async (req, res) => {
+adminRoute.post("/new/bottoms", async (req, res) => {
   try {
     const files = req.files.image;
     console.log("We have received Files now uploading to the server");
@@ -88,7 +88,7 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
           return url.secure_url;
         })
       );
-      await Sweatpants.create({
+      await Bottoms.create({
         ...req.body,
         stock: JSON.parse(req.body.stock),
         image: urls,
@@ -100,7 +100,7 @@ adminRoute.post("/new/sweatpants", async (req, res) => {
       });
       fs.unlinkSync(files.tempFilePath);
 
-      await Sweatpants.create({
+      await Bottoms.create({
         ...req.body,
         stock: JSON.parse(req.body.stock),
         image: [url.secure_url],
@@ -255,7 +255,7 @@ adminRoute.post("/new/hoodies", async (req, res) => {
 });
 
 // getting product data
-const productList = [Cargos, Sweatpants, Hoodies, Tshirts, Shirts];
+const productList = [Cargos, Bottoms, Hoodies, Tshirts, Shirts];
 
 adminRoute.post("/post/all", async (req, res) => {
   const alldata = await Promise.all(
