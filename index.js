@@ -12,6 +12,7 @@ import { verifyToken } from "./middlewares/jwt.js";
 import { verifyAdmin } from "./middlewares/verifyAdmin.js";
 import test from "./test.js";
 import "./utils/cache.js";
+import paymentRouter from "./routes/payment.js";
 dotenv.config();
 
 const app = express();
@@ -38,6 +39,7 @@ app.use(cors());
 app.use("/get", productRouter);
 app.use("/admin", verifyToken, verifyAdmin, adminRoute);
 app.use("/user", userRoute);
+app.use("/payment", paymentRouter);
 
 app.use("/test", test);
 
