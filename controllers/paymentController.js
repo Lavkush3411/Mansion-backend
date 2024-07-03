@@ -78,7 +78,7 @@ async function paymentStatus(req, res) {
     method: "get",
     url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/${transactionID}`,
     headers: {
-      accept: "application/json",
+      Accept: "application/json",
       "Content-Type": "application/json",
       "X-VERIFY": checksum,
       "X-MERCHANT-ID": process.env.PHONEPAY_MERCHENTID,
