@@ -75,17 +75,21 @@ async function paymentStatus(req, res) {
       "X-MERCHANT-ID": process.env.PHONEPAY_MERCHENTID,
     },
   };
-  axios
-    .request(options)
-    .then(function (response) {
-      req.data = response.data;
-      req.error = "";
-      updateOrder(req, res);
-    })
-    .catch(function (error) {
-      req.error = error;
-      updateOrder(req, res);
-    });
+
+  try {
+    const response = await axios.request(options);
+    console.log(response);
+
+    if (response.data === "") {
+      throw new Error("Error in getting status update of order");
+    }
+    req.status = response.status;
+    req.data = response.data;
+    updateOrder(req, res);
+  } catch (error) {
+    req.error = error;
+    res.status(400).send("Error in getting status update of order");
+  }
 }
 
 export { initiatePayment, paymentStatus };
