@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   isAdmin: { type: Boolean, default: false },
+  orders: { type: [mongoose.Schema.Types.ObjectId], default: [] },
 });
 
 // UserSchema.index({ email: 1 });

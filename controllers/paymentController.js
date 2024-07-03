@@ -3,20 +3,13 @@ import createHashedString from "../utils/createHash.js";
 import axios from "axios";
 
 function initiatePayment(req, res) {
-  const { transactionAmount, contactNumber, redirectPath } = req.body;
-  const date = new Date();
-  const paymentUUID =
-    v4().substring(0, 24) +
-    String(date.getDate()).padStart(2, "0") +
-    String(date.getMonth() + 1).padStart(2, "0") +
-    date.getFullYear();
-  console.log(paymentUUID);
+  const { totalAmount, contactNumber, redirectPath, paymentUUID } = req.body;
   const phonePayEndPoint = "/pg/v1/pay";
   const payLoad = {
-    merchantId: "PGTESTPAYUAT86",
+    merchantId: process.env.PHONEPAY_MERCHENTID,
     merchantTransactionId: paymentUUID,
     merchantUserId: "MUID123d",
-    amount: 100 * transactionAmount,
+    amount: 100 * totalAmount,
     redirectUrl: process.env.FRONTEND_HOME_URL + redirectPath,
     redirectMode: "REDIRECT",
     callbackUrl:
@@ -62,9 +55,35 @@ function initiatePayment(req, res) {
     });
 }
 
-function paymentStatus(req, res) {
-  console.log("request received");
-  console.log(req.params);
+async function paymentStatus(req, res) {
+  const { transactionID } = req.params;
+  const checksum =
+    createHashedString(
+      `/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/${transactionID}` +
+        process.env.PHONEPAY_SALT_KEY
+    ) +
+    "###" +
+    process.env.PHONEPAY_SALT_INDEX;
+  const options = {
+    method: "get",
+    url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/${transactionID}`,
+    headers: {
+      accept: "text/plain",
+      "Content-Type": "application/json",
+      "X-VERIFY": checksum,
+      "X-MERCHANT-ID": process.env.PHONEPAY_MERCHENTID,
+    },
+  };
+  axios
+    .request(options)
+    .then(function (response) {
+      console.clear();
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.clear();
+      console.error(error);
+    });
 }
 
 export { initiatePayment, paymentStatus };

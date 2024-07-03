@@ -3,9 +3,10 @@ import {
   initiatePayment,
   paymentStatus,
 } from "../controllers/paymentController.js";
+import createOrder from "../middlewares/createOrder.middleware.js";
 const paymentRouter = express.Router();
 
-paymentRouter.route("/initiate").post(initiatePayment);
-paymentRouter.route("/status/:id").post(paymentStatus);
+paymentRouter.route("/initiate").post(createOrder, initiatePayment);
+paymentRouter.route("/status/:transactionID").post(paymentStatus);
 
 export default paymentRouter;
