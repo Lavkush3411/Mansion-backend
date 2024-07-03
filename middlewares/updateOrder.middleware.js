@@ -14,5 +14,5 @@ export default async function updateOrder(req, res, data) {
     }
   } else {
   }
-  res.status(200);
+  res.status(200).send();
 }
