@@ -19,7 +19,7 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  orderStatus: { type: String, required: true, default: "Pending" },
+  orderStatus: { type: String, required: true, default: "Initiated" },
   createdAt: { type: String, default: () => Date.now().toLocaleString() },
   updatedAt: { type: String, default: () => Date.now().toLocaleString() },
 });

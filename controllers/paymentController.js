@@ -1,6 +1,7 @@
 import { v4 } from "uuid";
 import createHashedString from "../utils/createHash.js";
 import axios from "axios";
+import updateOrder from "../middlewares/updateOrder.middleware.js";
 
 function initiatePayment(req, res) {
   const { totalAmount, contactNumber, redirectPath, paymentUUID } = req.body;
@@ -54,16 +55,6 @@ function initiatePayment(req, res) {
       console.error(error);
     });
 }
-(() => {
-  console.log(
-    createHashedString(
-      `/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/66854cfa42a52dacd1b359d4}` +
-        process.env.PHONEPAY_SALT_KEY
-    ) +
-      "###" +
-      process.env.PHONEPAY_SALT_INDEX
-  );
-})();
 
 async function paymentStatus(req, res) {
   const { transactionID } = req.params;
@@ -87,12 +78,13 @@ async function paymentStatus(req, res) {
   axios
     .request(options)
     .then(function (response) {
-      console.clear();
-      console.log(response.data);
+      req.data = response.data;
+      req.error = "";
+      updateOrder(req, res);
     })
     .catch(function (error) {
-      console.clear();
-      console.error(error);
+      req.error = error;
+      updateOrder(req, res);
     });
 }
 

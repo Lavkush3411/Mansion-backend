@@ -1,4 +1,5 @@
 import Orders from "../model/orders.js";
+import User from "../model/users.js";
 
 async function createOrder(req, res, next) {
   const { user, totalAmount, products } = req.body;
@@ -13,6 +14,10 @@ async function createOrder(req, res, next) {
 
   const order = await Orders.create(newOrder);
   console.log(order._id);
+  await User.findOneAndUpdate(
+    { email: user.email },
+    { $push: { orders: order._id } }
+  );
   req.body.paymentUUID = order._id;
   next();
 }
