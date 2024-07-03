@@ -6,6 +6,6 @@ import {
 const paymentRouter = express.Router();
 
 paymentRouter.route("/initiate").post(initiatePayment);
-paymentRouter.route("/status/:id").get(paymentStatus);
+paymentRouter.route("/status/:id").post(paymentStatus);
 
 export default paymentRouter;
