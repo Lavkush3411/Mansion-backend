@@ -54,6 +54,16 @@ function initiatePayment(req, res) {
       console.error(error);
     });
 }
+(() => {
+  console.log(
+    createHashedString(
+      `/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/66854cfa42a52dacd1b359d4}` +
+        process.env.PHONEPAY_SALT_KEY
+    ) +
+      "###" +
+      process.env.PHONEPAY_SALT_INDEX
+  );
+})();
 
 async function paymentStatus(req, res) {
   const { transactionID } = req.params;
@@ -68,7 +78,7 @@ async function paymentStatus(req, res) {
     method: "get",
     url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/${transactionID}`,
     headers: {
-      accept: "text/plain",
+      accept: "application/json",
       "Content-Type": "application/json",
       "X-VERIFY": checksum,
       "X-MERCHANT-ID": process.env.PHONEPAY_MERCHENTID,
