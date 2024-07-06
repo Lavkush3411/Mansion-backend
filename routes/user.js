@@ -41,7 +41,7 @@ userRoute.route("/login").post(async (req, res) => {
     const hashedPassword = createHashedString(password);
     if (!user) throw { msg: "NonExistingError" };
     if (user.password !== hashedPassword) throw { msg: "WrongPasswordError" };
-    const { _id, __v, ...data } = user._doc;
+    const { _id, __v, ...data } = user._doc; // **password is being removed when token is generated as here password vaiable is already declared
     res
       .status(200)
       .json({ Token: genrateToken(data), msg: "Login Successfull" });
@@ -59,7 +59,7 @@ userRoute.post("/verify", verifyToken, (req, res) => {
     }
   }
 });
- 
+
 userRoute.post("/verify-admin", verifyToken, verifyAdmin, (req, res) => {
   if (req.body.isAdmin) {
     res.status(200).send({ isAdmin: req.body.isAdmin, msg: "Verified Admin" });

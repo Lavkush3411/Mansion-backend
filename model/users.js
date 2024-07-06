@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { usersDb } from "../db.js";
 
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -18,6 +19,6 @@ const UserSchema = new mongoose.Schema({
 });
 
 // UserSchema.index({ email: 1 });
-const User = new mongoose.model("User", UserSchema);
+const User = usersDb.model("User", UserSchema);
 
 export default User;

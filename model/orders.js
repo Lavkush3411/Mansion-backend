@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ordersDb } from "../db.js";
 
 const orderSchema = new mongoose.Schema({
   userId: {
@@ -12,6 +13,7 @@ const orderSchema = new mongoose.Schema({
       productName: String,
       productPrice: Number,
       size: String,
+      image: String,
       qty: Number,
     },
   ],
@@ -20,10 +22,18 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   orderStatus: { type: String, required: true, default: "Initiated" },
-  createdAt: { type: String, default: () => Date.now().toLocaleString() },
-  updatedAt: { type: String, default: () => Date.now().toLocaleString() },
+  createdAt: {
+    type: String,
+    default: () =>
+      new Date().toLocaleDateString() + " " + new Date().toTimeString(),
+  },
+  updatedAt: {
+    type: String,
+    default: () =>
+      new Date().toLocaleDateString() + " " + new Date().toTimeString(),
+  },
 });
 
-const Orders = mongoose.model("order", orderSchema);
+const Orders = ordersDb.model("order", orderSchema);
 
 export default Orders;

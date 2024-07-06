@@ -13,6 +13,7 @@ import { verifyAdmin } from "./middlewares/verifyAdmin.js";
 import test from "./test.js";
 import "./utils/cache.js";
 import paymentRouter from "./routes/payment.js";
+import { orderRouter } from "./routes/order.js";
 dotenv.config();
 
 const app = express();
@@ -40,7 +41,11 @@ app.use("/get", productRouter);
 app.use("/admin", verifyToken, verifyAdmin, adminRoute);
 app.use("/user", userRoute);
 app.use("/payment", paymentRouter);
-
+app.use("/order", orderRouter);
 app.use("/test", test);
 
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.json({ msg: "Global Server Error " });
+});
 app.listen(3000, () => console.log("server is running on port 3000"));

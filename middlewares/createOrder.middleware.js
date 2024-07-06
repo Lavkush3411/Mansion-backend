@@ -8,6 +8,7 @@ async function createOrder(req, res, next) {
     productName: product.productName,
     productPrice: product.productPrice,
     size: product.size,
+    image: product.image[0],
     qty: product.qty,
   }));
   const newOrder = { userId: user.email, products: productsList, totalAmount };
