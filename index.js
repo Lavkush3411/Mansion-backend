@@ -21,6 +21,36 @@ app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
+app.use(cors());
+app.use("/get", productRouter);
+app.use("/admin", verifyToken, verifyAdmin, adminRoute);
+app.use("/user", userRoute);
+app.use("/payment", paymentRouter);
+app.use("/order", orderRouter);
+app.use("/test", test);
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.json({ msg: "Global Server Error " });
+});
+app.listen(3000, () => console.log("server is running on port 3000"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// because users cannot delete products only admin can delete
 // const corsOptions = {
 //   origin: "https://mansionstreetwear.netlify.app", // Replace with your client URL
 //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -34,18 +64,3 @@ app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 // };
 
 // app.use(cors(corsOptions));
-
-app.use(cors());
-// because users cannot delete products only admin can delete
-app.use("/get", productRouter);
-app.use("/admin", verifyToken, verifyAdmin, adminRoute);
-app.use("/user", userRoute);
-app.use("/payment", paymentRouter);
-app.use("/order", orderRouter);
-app.use("/test", test);
-
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.json({ msg: "Global Server Error " });
-});
-app.listen(3000, () => console.log("server is running on port 3000"));

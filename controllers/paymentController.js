@@ -14,7 +14,7 @@ function initiatePayment(req, res) {
     redirectUrl: process.env.FRONTEND_HOME_URL + redirectPath,
     redirectMode: "REDIRECT",
     callbackUrl:
-      process.env.BACKEND_HOME_URL + `/payment/status/${paymentUUID}`, //need to change
+      process.env.BACKEND_HOME_URL + `/payment/callback/${paymentUUID}`, //need to change
     mobileNumber: contactNumber,
     paymentInstrument: {
       type: "PAY_PAGE",
@@ -92,4 +92,42 @@ async function paymentStatus(req, res) {
   }
 }
 
-export { initiatePayment, paymentStatus };
+async function paymentCallback(req, res) {
+  const { transactionID } = req.params;
+
+  console.log(req.body);
+  // const checksum =
+  //   createHashedString(
+  //     `/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/${transactionID}` +
+  //       process.env.PHONEPAY_SALT_KEY
+  //   ) +
+  //   "###" +
+  //   process.env.PHONEPAY_SALT_INDEX;
+  // const options = {
+  //   method: "get",
+  //   url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/${transactionID}`,
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
+  //     "X-VERIFY": checksum,
+  //     "X-MERCHANT-ID": process.env.PHONEPAY_MERCHENTID,
+  //   },
+  // };
+
+  // try {
+  //   const response = await axios.request(options);
+  //   console.log(response);
+
+  //   if (response.data === "") {
+  //     throw new Error("Error in getting status update of order");
+  //   }
+  //   req.status = response.status;
+  //   req.data = response.data;
+  //   updateOrder(req, res);
+  // } catch (error) {
+  //   req.error = error;
+  //   res.status(400).send("Error in getting status update of order");
+  // }
+}
+
+export { initiatePayment, paymentStatus, paymentCallback };
