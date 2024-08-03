@@ -6,7 +6,7 @@ import fileUpload from "express-fileupload";
 import "./plugins/cloudinary.js";
 import dotenv from "dotenv";
 import adminRoute from "./routes/admin.js";
-import productRouter from "./routes/product.js";
+import { productRouter } from "./routes/product.js";
 import userRoute from "./routes/user.js";
 import { verifyToken } from "./middlewares/jwt.js";
 import { verifyAdmin } from "./middlewares/verifyAdmin.js";
@@ -23,6 +23,8 @@ app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 app.use(cors());
 app.use("/get", productRouter);
+app.use("/products", productRouter);
+
 app.use("/admin", verifyToken, verifyAdmin, adminRoute);
 app.use("/user", userRoute);
 app.use("/payment", paymentRouter);
@@ -35,22 +37,6 @@ app.use((err, req, res, next) => {
 });
 app.listen(3000, () => console.log("server is running on port 3000"));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// because users cannot delete products only admin can delete
 // const corsOptions = {
 //   origin: "https://mansionstreetwear.netlify.app", // Replace with your client URL
 //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",

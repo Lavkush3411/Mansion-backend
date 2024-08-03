@@ -1,54 +1,10 @@
 import express from "express";
 import {
-  Cargos,
-  Bottoms,
-  Hoodies,
-  Tshirts,
-  Shirts,
-} from "../model/products.js";
-import cache from "../utils/cache.js";
+  getAllProducts,
+  getProducts,
+} from "../controllers/productController.js";
 
-const productRouter = express.Router();
+export const productRouter = express.Router();
 
-const productList = [Cargos, Bottoms, Hoodies, Tshirts, Shirts];
-
-productRouter.get("/all", async (req, res) => {
-  const cachedData = cache.get("all");
-  if (cachedData) {
-    console.log("cached data");
-    res.send(cachedData);
-    return;
-  }
-
-  const alldata = await Promise.all(
-    productList.map((item) => item.find().lean())
-  );
-  const data = alldata.flat();
-  res.send(data);
-  cache.set("all", data);
-});
-
-productRouter.get("/bottoms", async (req, res) => {
-  const data = await Bottoms.find().lean();
-  res.send(data);
-});
-
-productRouter.get("/cargos", async (req, res) => {
-  const data = await Cargos.find().lean();
-  res.send(data);
-});
-
-productRouter.get("/tshirts", async (req, res) => {
-  const data = await Tshirts.find().lean();
-  res.send(data);
-});
-productRouter.get("/shirts", async (req, res) => {
-  const data = await Shirts.find().lean();
-  res.send(data);
-});
-productRouter.get("/hoodies", async (req, res) => {
-  const data = await Hoodies.find().lean();
-  console.log(data);
-  res.send(data);
-});
-export default productRouter;
+productRouter.get("/all", getAllProducts);
+productRouter.get("/:product", getProducts);
