@@ -1,13 +1,6 @@
-import {
-  Cargos,
-  Bottoms,
-  Hoodies,
-  Tshirts,
-  Shirts,
-} from "../model/products.js";
+import { All } from "../model/products.js";
 import mongoose from "mongoose";
 import cache from "../utils/cache.js";
-const productList = [Cargos, Bottoms, Hoodies, Tshirts, Shirts];
 
 export const getAllProducts = async (req, res) => {
   const cachedData = cache.get("all");
@@ -17,17 +10,14 @@ export const getAllProducts = async (req, res) => {
     return;
   }
 
-  const alldata = await Promise.all(
-    productList.map((item) => item.find().lean())
-  );
+  const alldata = await All.find().lean();
   const data = alldata.flat();
   res.send(data);
   cache.set("all", data);
 };
 
 export const getProducts = async (req, res) => {
-  let product = req.params.product;
-  product = product.slice(0, -1);
+  const product = req.params.product;
   if (product) {
     try {
       const Product = mongoose.model(product);
