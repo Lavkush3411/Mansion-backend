@@ -13,6 +13,6 @@ export const indexRouter = express.Router();
 indexRouter.use("/products", productRouter);
 indexRouter.use("/admin", verifyToken, verifyAdmin, adminRouter);
 indexRouter.use("/user", userRouter);
-indexRouter.use("/payment", verifyToken, paymentRouter);
+indexRouter.use("/payment", paymentRouter);
 indexRouter.use("/order", orderRouter);
 indexRouter.use("/test", test);
