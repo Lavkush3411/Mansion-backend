@@ -26,7 +26,7 @@ export const compareOrderAmount = async (req, res, next) => {
     _id: { $in: productIDList },
   }).lean();
 
-  if (!productsFromDb) return res.json("No products found");
+  if (!productsFromDb) return res.staus(404).json("No products found");
 
   let totalAmountFromDB = 0;
 
@@ -42,6 +42,6 @@ export const compareOrderAmount = async (req, res, next) => {
     req.newOrder = { userId: user.email, products: productsList, totalAmount };
     next();
   } else {
-    return res.json("Some difference in amounts found from db");
+    return res.staus(404).json("Some difference in amounts found from db");
   }
 };
