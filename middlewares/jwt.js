@@ -18,8 +18,9 @@ function verifyToken(req, res, next) {
     return;
   }
   try {
-    jwt.verify(token, process.env.JWT_KEY);
+    const data = jwt.verify(token, process.env.JWT_KEY);
     req.body.valid = true;
+    req.email = data.email;
 
     next();
   } catch (JsonWebTokenError) {

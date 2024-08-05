@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
+import { All } from "../model/products.js";
 
 export const compareOrderAmount = async (req, res, next) => {
   const { user, totalAmount, products } = req.body;
@@ -11,22 +12,36 @@ export const compareOrderAmount = async (req, res, next) => {
     qty: product.qty,
   }));
 
-  const productIDList = productsList.map((product) => product.productId);
+  const productIDList = [];
+  const productIDQtyMapping = {};
 
-  const totalAmountFromDB = await mongoose.aggregate([
-    {
-      $match: {
-        _id: { $in: productIDList },
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        totalValue: { $sum: "$value" },
-      },
-    },
-  ]);
-  return res.send(totalAmountFromDB);
+  for (let pdct of productsList) {
+    productIDList.push(
+      mongoose.Types.ObjectId.createFromHexString(pdct.productId)
+    );
+    productIDQtyMapping[pdct.productId] = pdct.qty;
+  }
 
-  req.newOrder = { userId: user.email, products: productsList, totalAmount };
+  const productsFromDb = await All.find({
+    _id: { $in: productIDList },
+  }).lean();
+
+  if (!productsFromDb) return res.json("No products found");
+
+  let totalAmountFromDB = 0;
+
+  for (let pdct of productsFromDb) {
+    const qty = productIDQtyMapping[pdct._id];
+    totalAmountFromDB += qty * pdct.productPrice;
+  }
+
+  if (
+    !(totalAmountFromDB < totalAmount - 1) &&
+    !(totalAmountFromDB > totalAmount + 1)
+  ) {
+    req.newOrder = { userId: user.email, products: productsList, totalAmount };
+    next();
+  } else {
+    return res.json("Some difference in amounts found from db");
+  }
 };

@@ -5,7 +5,7 @@ async function createOrder(req, res, next) {
   const order = await Orders.create(req.newOrder);
   console.log(order._id);
   await User.findOneAndUpdate(
-    { email: user.email },
+    { email: req.email },
     { $push: { orders: order._id } }
   );
   req.body.paymentUUID = order._id;
