@@ -12,11 +12,11 @@ export const userOrders = async function (req, res) {
   // }
 
   const emailSchema = zod.string().email();
-  if (!emailSchema.safeParse(req.body.email).success) {
+  if (!emailSchema.safeParse(req.email).success) {
     res.status(200).json({ msg: "Please send valid email" });
     return;
   }
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ email: req.email });
   if (!user) {
     res.status(200).json({ msg: "Please send valid email" });
     return;

@@ -12,5 +12,5 @@ export const adminRouter = express.Router();
 
 adminRouter.delete("/delete/:type", deleteProudctController);
 adminRouter.post("/new/:product", addProduct);
-adminRouter.post("/post/all", getAllProducts);
-adminRouter.post("/post/:product", getProducts);
+adminRouter.get("/all", getAllProducts);
+adminRouter.get("/:product", getProducts);

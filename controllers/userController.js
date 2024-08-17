@@ -34,12 +34,20 @@ export const login = async (req, res) => {
     if (!user) throw { msg: "NonExistingError" };
     if (user.password !== hashedPassword) throw { msg: "WrongPasswordError" };
     const { _id, __v, ...data } = user._doc; // **password is being removed when token is generated as here password vaiable is already declared
-    res
-      .status(200)
-      .json({ Token: genrateToken(data), msg: "Login Successfull" });
+    const token = genrateToken(data);
+    res.cookie("token", token, {
+      httpOnly: true, // The cookie is only accessible by the server, not client-side JavaScript
+      secure: true, // The cookie will only be sent over HTTPS (important for SameSite=None)
+    });
+    res.status(200).json({ Token: token, msg: "Login Successfull" });
   } catch (err) {
     res.status(404).json({ msg: err.msg });
   }
+};
+
+export const logout = (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ msg: "logged out" });
 };
 
 export const verifyUser = (req, res) => {

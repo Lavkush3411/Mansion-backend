@@ -5,6 +5,7 @@ import verifyOtp from "../middlewares/verifyOtp.js";
 import {
   createUser,
   login,
+  logout,
   verifyAdminUser,
   verifyUser,
 } from "../controllers/userController.js";
@@ -14,10 +15,11 @@ import {
 } from "../controllers/resetPasswordController.js";
 
 export const userRouter = express.Router();
-
+  
 userRouter.route("/create").post(createUser);
 userRouter.route("/login").post(login);
-userRouter.post("/verify", verifyToken, verifyUser);
-userRouter.post("/verify-admin", verifyToken, verifyAdmin, verifyAdminUser);
+userRouter.get("/verify", verifyToken, verifyUser);
+userRouter.get("/verify-admin", verifyToken, verifyAdmin, verifyAdminUser);
 userRouter.post("/password-reset-otp", resetPasswordOtp);
 userRouter.post("/reset-password", verifyOtp, resetPassword);
+userRouter.get("/logout", logout);
