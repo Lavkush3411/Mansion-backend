@@ -15,7 +15,7 @@ import {
 } from "../controllers/resetPasswordController.js";
 
 export const userRouter = express.Router();
-  
+
 userRouter.route("/create").post(createUser);
 userRouter.route("/login").post(login);
 userRouter.get("/verify", verifyToken, verifyUser);

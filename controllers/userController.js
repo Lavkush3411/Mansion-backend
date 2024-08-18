@@ -69,3 +69,17 @@ export const verifyAdminUser = (req, res) => {
       .send({ isAdmin: req.body.isAdmin, msg: "Admin Verification failed" });
   }
 };
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find(
+      {},
+      { password: 0, isAdmin: 0, __v: 0, orders: 0 }
+    )
+      .lean()
+      .sort({ _id: -1 });
+    res.status(200).json(users);
+  } catch {
+    res.status(500).json("Some error occured while getting users data");
+  }
+};

@@ -27,3 +27,17 @@ export const userOrders = async function (req, res) {
   });
   res.send(ordersData);
 };
+
+export const getAllOrders = async (req, res) => {
+  try {
+    const users = await Orders.find(
+      {},
+      { password: 0, isAdmin: 0, __v: 0, orders: 0 }
+    )
+      .lean()
+      .sort({ _id: -1 });
+    res.status(200).json(users);
+  } catch {
+    res.status(500).json("Some error occured while getting users data");
+  }
+};

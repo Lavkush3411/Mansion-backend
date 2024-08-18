@@ -74,3 +74,28 @@ export const deleteProudctController = async (req, res) => {
   cache.del("all");
   cacheData();
 };
+
+export const updateProductController = async (req, res) => {
+  const productId = req.params.product;
+  const { productName, productPrice, stock, type } = req.body;
+
+  if (!productId)
+    return res.send("ProductId should be given inside when updating");
+  try {
+  
+    await All.findByIdAndUpdate(productId, {
+      productName,
+      productPrice,
+      type,
+      stock: JSON.parse(req.body.stock),
+    });
+    console.log("updated");
+    res.send({ msg: `${productId} is updated` });
+  } catch (e) {
+    console.log(e);
+    res.json({ msg: e });
+  } finally {
+    cache.del("all");
+    cacheData();
+  }
+};

@@ -2,6 +2,20 @@ import { All } from "../model/products.js";
 import mongoose from "mongoose";
 import cache from "../utils/cache.js";
 
+export const getProductByID = async (req, res) => {
+  let id = req.params.productid;
+  if (id) {
+    try {
+      const product = await All.findById(id).lean();
+      res.status(200).json({ ...product });
+    } catch (e) {
+      res.status(400).json("product id notfound for specified product");
+    }
+  } else {
+    res.status(400).json("product id notfound for specified product");
+  }
+};
+
 export const getAllProducts = async (req, res) => {
   const cachedData = cache.get("all");
   if (cachedData) {

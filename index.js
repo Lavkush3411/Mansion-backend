@@ -17,7 +17,13 @@ app.use(cookieParser());
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
-app.use(cors({ credentials: true, origin: process.env.FRONTEND_HOME_URL }));
+app.use(
+  cors({
+    credentials: true,
+    methods: ["GET", "POST", "PATCH", "DELETE", "PUT"],
+    origin: process.env.FRONTEND_HOME_URL,
+  })
+);
 app.use("/", indexRouter);
 app.use(gloabalCatch);
 
