@@ -42,6 +42,6 @@ export const compareOrderAmount = async (req, res, next) => {
     req.newOrder = { userId: user.email, products: productsList, totalAmount };
     next();
   } else {
-    return res.staus(404).json("Some difference in amounts found from db");
+    return res.status(404).json("Some difference in amounts found from db");
   }
 };
