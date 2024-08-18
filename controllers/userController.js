@@ -83,3 +83,26 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json("Some error occured while getting users data");
   }
 };
+
+export const updateAddress = async (req, res) => {
+  const address = req.body.address;
+  try {
+    await User.findOneAndUpdate({ email: req.email }, { address });
+    res.status(200).json({ msg: "Address is updated" });
+  } catch {
+    res
+      .status(401)
+      .json({ msg: "Some error occured while updating the address" });
+  }
+};
+
+export const getAddress = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.email });
+    res.status(200).json({ address: user.address });
+  } catch {
+    res
+      .status(401)
+      .json({ msg: "Some error occured while updating the address" });
+  }
+};

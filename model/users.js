@@ -14,6 +14,14 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  address: {
+    address1: String,
+    address2: String,
+    city: String,
+    state: String,
+    pincode: String,
+    country: { type: String, default: "India" },
+  },
   isAdmin: { type: Boolean, default: false },
   orders: { type: [mongoose.Schema.Types.ObjectId], default: [] },
 });

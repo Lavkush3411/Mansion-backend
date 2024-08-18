@@ -4,8 +4,10 @@ import { verifyAdmin } from "../middlewares/verifyAdmin.js";
 import verifyOtp from "../middlewares/verifyOtp.js";
 import {
   createUser,
+  getAddress,
   login,
   logout,
+  updateAddress,
   verifyAdminUser,
   verifyUser,
 } from "../controllers/userController.js";
@@ -21,5 +23,7 @@ userRouter.route("/login").post(login);
 userRouter.get("/verify", verifyToken, verifyUser);
 userRouter.get("/verify-admin", verifyToken, verifyAdmin, verifyAdminUser);
 userRouter.post("/password-reset-otp", resetPasswordOtp);
+userRouter.post("/address", verifyToken, updateAddress);
+userRouter.get("/address", verifyToken, getAddress);
 userRouter.post("/reset-password", verifyOtp, resetPassword);
 userRouter.get("/logout", logout);
