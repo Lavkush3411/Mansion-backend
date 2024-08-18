@@ -20,8 +20,7 @@ export const getProducts = async (req, res) => {
   const product = req.params.product;
   if (product) {
     try {
-      const Product = mongoose.model(product);
-      const data = await Product.find().lean();
+      const data = await All.find({ type: product }).lean();
       return res.send(data);
     } catch (err) {
       console.log(err);

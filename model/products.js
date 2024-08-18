@@ -14,10 +14,5 @@ const productSchema = new mongoose.Schema({
   type: { type: String, required: true },
 });
 const All = mongoose.model("allProducts", productSchema);
-const Cargos = mongoose.model("cargos", productSchema);
-const Bottoms = mongoose.model("bottoms", productSchema);
-const Shirts = mongoose.model("shirts", productSchema);
-const Tshirts = mongoose.model("tshirts", productSchema);
-const Hoodies = mongoose.model("hoodies", productSchema);
 
-export { Cargos, Bottoms, Shirts, Tshirts, Hoodies, All };
+export { All };

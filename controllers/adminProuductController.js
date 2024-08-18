@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import fs from "fs";
 import cache, { cacheData } from "../utils/cache.js";
 import deleteProduct from "./deleteProduct.js";
+import { All } from "../model/products.js";
 
 export const addProduct = async (req, res) => {
   const productName = req.params.product;
@@ -13,7 +14,6 @@ export const addProduct = async (req, res) => {
     const files = req.files.image;
     //if multiple files are sent by the server then it will be in array form that can be handled as below
     console.log("We have received Files now uploading to the server");
-    const Product = mongoose.model(productName);
     if (Array.isArray(files)) {
       const urls = await Promise.all(
         files.map(async (file) => {
@@ -28,11 +28,6 @@ export const addProduct = async (req, res) => {
       );
 
       session.startTransaction();
-      await Product.create({
-        ...req.body,
-        stock: JSON.parse(req.body.stock),
-        image: urls,
-      });
 
       await All.create({
         ...req.body,
@@ -51,11 +46,6 @@ export const addProduct = async (req, res) => {
       });
       fs.unlinkSync(files.tempFilePath);
       session.startTransaction();
-      await Product.create({
-        ...req.body,
-        stock: JSON.parse(req.body.stock),
-        image: [url.secure_url],
-      });
       await All.create({
         ...req.body,
         stock: JSON.parse(req.body.stock),

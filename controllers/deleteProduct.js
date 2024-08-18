@@ -1,19 +1,5 @@
-import {
-  Cargos,
-  Hoodies,
-  Tshirts,
-  Shirts,
-  Bottoms,
-} from "../model/products.js";
+import { All } from "../model/products.js";
 import { v2 as cloudinary } from "cloudinary";
-
-const typeObj = {
-  cargos: Cargos,
-  bottoms: Bottoms,
-  hoodies: Hoodies,
-  tshirts: Tshirts,
-  shirts: Shirts,
-};
 
 const deleteProduct = async (req, res, type) => {
   const { id } = req.body;
@@ -21,12 +7,13 @@ const deleteProduct = async (req, res, type) => {
     return res.status(400).send({ msg: "Missing id" });
   }
   try {
-    const product = await typeObj[type].findByIdAndDelete(id).lean();
+    const product = await All.findByIdAndDelete(id).lean();
     if (!product) {
       return res
         .status(404)
         .send({ msg: "Product not found, therefore can't delete" });
     }
+
     const v = await Promise.all(
       product.image.map(async (imageLink) => {
         let publicId = imageLink.split("/");

@@ -1,18 +1,12 @@
 import NodeCache from "node-cache";
-import {
-  Cargos,
-  Hoodies,
-  Tshirts,
-  Shirts,
-  Bottoms,
-} from "../model/products.js";
-const productList = [Cargos, Bottoms, Hoodies, Tshirts, Shirts];
+import { All } from "../model/products.js";
+const productList = ["cargos", "bottoms", "hoodies", "tshirts", "shirts"];
 
 const cache = new NodeCache({ stdTTL: 0 });
 async function cacheData() {
   cache.flushAll();
   const alldata = await Promise.all(
-    productList.map((item) => item.find().lean())
+    productList.map((item) => All.find({ type: item }).lean())
   );
   const data = alldata.flat();
   cache.set("all", data);
