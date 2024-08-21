@@ -21,11 +21,7 @@ app.use(
   cors({
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE", "PUT"],
-    origin: [
-      process.env.FRONTEND_HOME_URL,
-      "https://mansion-react.vercel.app",
-      "https://mansionhub.in",
-    ],
+    origin: [process.env.FRONTEND_HOME_URL],
   })
 );
 app.use("/", indexRouter);

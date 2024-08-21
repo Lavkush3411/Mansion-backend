@@ -133,8 +133,16 @@ export const updateUser = async (req, res) => {
         _id: 0,
         __v: 0,
         runValidators: true,
+        new: true,
       }
     );
+    const { _id, __v, ...data } = user._doc;
+
+    const token = genrateToken(data);
+    res.cookie("token", token, {
+      httpOnly: true, // The cookie is only accessible by the server, not client-side JavaScript
+      secure: true, // The cookie will only be sent over HTTPS (important for SameSite=None)
+    });
     res.status(200).json({ user });
   } catch {
     res

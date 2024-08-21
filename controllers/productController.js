@@ -45,31 +45,6 @@ export const getProducts = async (req, res) => {
   }
 };
 
-// export const productAvailibilityCheck = async (req, res) => {
-//   const products = req.body;
-//   const productsList = products.map((product) => ({
-//     productId: product._id,
-//     productName: product.productName,
-//     productPrice: product.productPrice,
-//     size: product.size,
-//     image: product.image[0],
-//     qty: product.qty,
-//   }));
-
-//   const productIDList = [];
-//   const productIDQtyMapping = {};
-//   const productIDSizeMapping = {};
-//   for (let pdct of productsList) {
-//     productIDList.push(
-//       mongoose.Types.ObjectId.createFromHexString(pdct.productId)
-//     );
-//     productIDQtyMapping[pdct.productId] = pdct.qty;
-//     productIDSizeMapping[pdct.productId]=pdct.size
-//   }
-
-//   const productsFromDb = await All.find({ _id: { $in: productIDList },stock:{size:} });
-//   if (!productsFromDb) return res.staus(404).json("No products found");
-// };
 
 export const checkAvailabilityForMultipleProducts = async (req, res) => {
   // Create a match condition to find the products and relevant stock items
