@@ -103,6 +103,42 @@ export const getAddress = async (req, res) => {
   } catch {
     res
       .status(401)
-      .json({ msg: "Some error occured while updating the address" });
+      .json({ msg: "Some error occured while getting the address" });
+  }
+};
+
+export const getSingleUser = async (req, res) => {
+  try {
+    const user = await User.findOne(
+      { email: req.email },
+      { isAdmin: 0, orders: 0, password: 0, _id: 0, __v: 0 }
+    );
+    res.status(200).json({ user });
+  } catch {
+    res
+      .status(401)
+      .json({ msg: "Some error occured while getting user details" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: req.email },
+      { ...req.body },
+      {
+        isAdmin: 0,
+        orders: 0,
+        password: 0,
+        _id: 0,
+        __v: 0,
+        runValidators: true,
+      }
+    );
+    res.status(200).json({ user });
+  } catch {
+    res
+      .status(401)
+      .json({ msg: "Some error occured while getting user details" });
   }
 };

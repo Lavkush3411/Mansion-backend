@@ -5,9 +5,11 @@ import verifyOtp from "../middlewares/verifyOtp.js";
 import {
   createUser,
   getAddress,
+  getSingleUser,
   login,
   logout,
   updateAddress,
+  updateUser,
   verifyAdminUser,
   verifyUser,
 } from "../controllers/userController.js";
@@ -18,6 +20,8 @@ import {
 
 export const userRouter = express.Router();
 
+userRouter.get("/", verifyToken, getSingleUser);
+userRouter.post("/", verifyToken, updateUser);
 userRouter.route("/create").post(createUser);
 userRouter.route("/login").post(login);
 userRouter.get("/verify", verifyToken, verifyUser);
