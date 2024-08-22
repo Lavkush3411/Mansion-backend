@@ -19,7 +19,12 @@ export const compareOrderAmount = async (req, res, next) => {
     productIDList.push(
       mongoose.Types.ObjectId.createFromHexString(pdct.productId)
     );
-    productIDQtyMapping[pdct.productId] = pdct.qty;
+    if (productIDQtyMapping[pdct.productId]) {
+      //bug fixed for in single order same product of different sizes
+      productIDQtyMapping[pdct.productId] += pdct.qty;
+    } else {
+      productIDQtyMapping[pdct.productId] = pdct.qty;
+    }
   }
 
   const productsFromDb = await All.find({
@@ -34,6 +39,8 @@ export const compareOrderAmount = async (req, res, next) => {
     const qty = productIDQtyMapping[pdct._id];
     totalAmountFromDB += qty * pdct.productPrice;
   }
+
+  console.log(totalAmountFromDB);
 
   if (
     !(totalAmountFromDB < totalAmount - 1) &&
