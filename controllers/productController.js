@@ -45,74 +45,9 @@ export const getProducts = async (req, res) => {
   }
 };
 
-export const checkAvailabilityForMultipleProducts = async (req, res) => {
+export const availabilityResponder = async (req, res) => {
   // Create a match condition to find the products and relevant stock items
-  const { cartList: requestedProducts } = req.body;
-  if (!requestedProducts || Object.keys(requestedProducts).length <= 0) {
-    res.send("products not send");
-    return;
-  }
-
-  const matchConditions = requestedProducts.map(
-    (item) => mongoose.Types.ObjectId.createFromHexString(item._id)
-
-  );
-
-  // Use the aggregation framework
-  const products = await All.aggregate([
-    {
-      $match: {
-        _id: { $in: matchConditions },
-      },
-    },
-    {
-      $unwind: "$stock",
-    },
-    {
-      $match: {
-        $or: requestedProducts.map((item) => ({
-          _id: mongoose.Types.ObjectId.createFromHexString(item._id),
-          "stock.size": item.size,
-        })),
-      },
-    },
-    {
-      $project: {
-        _id: 1,
-        "stock.size": 1,
-        "stock.quantity": 1,
-      },
-    },
-  ]);
-  // Check availability for each requested product
-  const errList = [];
-  for (const item of requestedProducts) {
-    try {
-      const product = products.find(
-        (p) => p._id.toString() === item._id && p.stock.size === item.size
-      );
-
-      if (!product || product.stock.quantity <= 0) {
-        errList.push(
-          `We're sorry, but the requested product ${item.productName} is not available anymore, kindly remove from cart to proceed.`
-        );
-      }
-
-      if (
-        product &&
-        product.stock.quantity > 0 &&
-        product.stock.quantity < item.qty
-      ) {
-        errList.push(
-          `We're sorry, but the requested quantity (${item.qty}) for ${item.productName} in size ${item.size} is unavailable. Please reduce the quantity to continue.`
-        );
-      }
-    } catch (err) {
-      console.log(err);
-      res.status(404).send(err.message);
-      return;
-    }
-  }
+  const errList = req.errList;
   if (errList.length === 0) {
     res.status(200).json({ availibility: true });
   } else {

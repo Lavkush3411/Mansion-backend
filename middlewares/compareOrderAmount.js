@@ -11,6 +11,7 @@ export const compareOrderAmount = async (req, res, next) => {
     image: product.image[0],
     qty: product.qty,
   }));
+  req.body.cartList = products; // so that next middleware can user this
 
   const productIDList = [];
   const productIDQtyMapping = {};
@@ -39,8 +40,6 @@ export const compareOrderAmount = async (req, res, next) => {
     const qty = productIDQtyMapping[pdct._id];
     totalAmountFromDB += qty * pdct.productPrice;
   }
-
-  console.log(totalAmountFromDB);
 
   if (
     !(totalAmountFromDB < totalAmount - 1) &&

@@ -43,7 +43,7 @@ function initiatePayment(req, res) {
   axios
     .request(options)
     .then(function (response) {
-      console.log(response.data);
+      // console.log(response.data);
       res
         .json({
           url: response.data.data.instrumentResponse.redirectInfo.url,
@@ -78,7 +78,7 @@ async function paymentStatus(req, res) {
 
   try {
     const response = await axios.request(options);
-    console.log(response);
+    // console.log(response);
 
     if (response.data === "") {
       throw new Error("Error in getting status update of order");

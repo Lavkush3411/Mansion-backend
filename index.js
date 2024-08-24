@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import { indexRouter } from "./routes/indexRouter.js";
 import { gloabalCatch } from "./utils/gloabalCatch.js";
 import cookieParser from "cookie-parser";
+import { updateAllProducts } from "./test.js";
 dotenv.config();
 
 const app = express();
@@ -25,6 +26,8 @@ app.use(
   })
 );
 app.use("/", indexRouter);
+app.use("/test", updateAllProducts);
+
 app.use(gloabalCatch);
 
 app.listen(3000, () => console.log("server is running on port 3000"));

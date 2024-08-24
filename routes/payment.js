@@ -6,8 +6,17 @@ import {
 import createOrder from "../middlewares/createOrder.middleware.js";
 import { compareOrderAmount } from "../middlewares/compareOrderAmount.js";
 import { verifyToken } from "../middlewares/jwt.js";
+import { increaseReservedQuantity } from "../utils/manageReservedQuantity.js";
+import { checkAvailabilityForAllProducts } from "../middlewares/productAvailibilityChecker.js";
 export const paymentRouter = express.Router();
 paymentRouter
   .route("/initiate")
-  .post(verifyToken, compareOrderAmount, createOrder, initiatePayment);
+  .post(
+    verifyToken,
+    compareOrderAmount,
+    checkAvailabilityForAllProducts,
+    increaseReservedQuantity,
+    createOrder,
+    initiatePayment
+  );
 paymentRouter.route("/status/:transactionID").post(paymentStatus); //this route is post because this one is called by paytm webhook for updating payment status

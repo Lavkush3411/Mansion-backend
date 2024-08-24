@@ -9,6 +9,7 @@ const productSchema = new mongoose.Schema({
       _id: { type: String, required: true },
       size: { type: String, required: true },
       quantity: { type: Number, required: true },
+      reservedQuantity: { type: Number, required: true, default: 0 },
     },
   ],
   type: { type: String, required: true },
