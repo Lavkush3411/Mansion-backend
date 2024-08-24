@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Orders from "../model/orders.js";
 import { ordersDb } from "../db.js";
+import { All } from "../model/products.js";
 
 export default async function updateOrder(req, res) {
   if (req.status === 200 && req.data.code === "PAYMENT_SUCCESS") {
@@ -14,11 +15,12 @@ export default async function updateOrder(req, res) {
         { new: true }
       );
       const products = order.products;
+      console.log(products);
 
-      await Promise.all(
+      const data = await Promise.all(
         products.map((item) => {
-          Orders.findOneAndUpdate(
-            { _id: item._id, "stock.size": item.size },
+          return All.findOneAndUpdate(
+            { _id: item.productId, "stock.size": item.size },
             {
               $inc: {
                 "stock.$.quantity": -item.qty,
@@ -28,6 +30,8 @@ export default async function updateOrder(req, res) {
           );
         })
       );
+
+      console.log(data);
 
       res.status(200).send("Success");
     } catch (e) {

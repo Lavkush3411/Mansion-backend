@@ -1,3 +1,4 @@
+import updateOrder from "./middlewares/updateOrder.middleware.js";
 import Orders from "./model/orders.js";
 import { All } from "./model/products.js";
 import express from "express";
@@ -25,13 +26,12 @@ const updateAllProducts = async (req, res) => {
 testRouter.get("/update-reserved-stock-0", updateAllProducts);
 
 testRouter.patch("/update-paymentstatus/:id", async function (req, res) {
-  const orderID = req.params.id;
-  let data = await Orders.findByIdAndUpdate(
-    orderID,
-    { orderStatus: "Success" },
-    { new: true }
-  );
-  res.json(data.products);
+  req.data = {};
+  req.data.data = {};
+  req.status = 200;
+  req.data.data.merchantTransactionId = req.params.id;
+  req.data.code = "PAYMENT_SUCCESS";
+  updateOrder(req, res);
 });
 
 export { updateAllProducts };
