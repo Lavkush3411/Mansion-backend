@@ -45,25 +45,24 @@ export const getProducts = async (req, res) => {
   }
 };
 
-
 export const checkAvailabilityForMultipleProducts = async (req, res) => {
   // Create a match condition to find the products and relevant stock items
   const { cartList: requestedProducts } = req.body;
-
-  if (Object.keys(requestedProducts).length <= 0) {
+  if (!requestedProducts || Object.keys(requestedProducts).length <= 0) {
     res.send("products not send");
     return;
   }
-  const matchConditions = requestedProducts.map((item) => ({
-    _id: mongoose.Types.ObjectId.createFromHexString(item._id),
-    // "stock.size": item.size,
-  }));
+
+  const matchConditions = requestedProducts.map(
+    (item) => mongoose.Types.ObjectId.createFromHexString(item._id)
+
+  );
 
   // Use the aggregation framework
   const products = await All.aggregate([
     {
       $match: {
-        $or: matchConditions,
+        _id: { $in: matchConditions },
       },
     },
     {
@@ -85,7 +84,6 @@ export const checkAvailabilityForMultipleProducts = async (req, res) => {
       },
     },
   ]);
-
   // Check availability for each requested product
   const errList = [];
   for (const item of requestedProducts) {
@@ -100,7 +98,11 @@ export const checkAvailabilityForMultipleProducts = async (req, res) => {
         );
       }
 
-      if (product.stock.quantity > 0 && product.stock.quantity < item.qty) {
+      if (
+        product &&
+        product.stock.quantity > 0 &&
+        product.stock.quantity < item.qty
+      ) {
         errList.push(
           `We're sorry, but the requested quantity (${item.qty}) for ${item.productName} in size ${item.size} is unavailable. Please reduce the quantity to continue.`
         );
