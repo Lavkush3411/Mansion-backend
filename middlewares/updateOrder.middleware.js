@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Orders from "../model/orders.js";
 import { ordersDb } from "../db.js";
 import { All } from "../model/products.js";
+import cache from "../utils/cache.js";
 
 export default async function updateOrder(req, res) {
   if (req.status === 200 && req.data.code === "PAYMENT_SUCCESS") {
@@ -15,7 +16,6 @@ export default async function updateOrder(req, res) {
         { new: true }
       );
       const products = order.products;
-      console.log(products);
 
       const data = await Promise.all(
         products.map((item) => {
@@ -30,7 +30,7 @@ export default async function updateOrder(req, res) {
           );
         })
       );
-
+      cache.flushAll();
       res.status(200).send("Success");
     } catch (e) {
       console.error(`Failed to update item`, e);

@@ -6,10 +6,9 @@ const cache = new NodeCache({ stdTTL: 0 });
 async function cacheData() {
   cache.flushAll();
   const alldata = await Promise.all(
-    productList.map((item) => All.find({ type: item }).lean())
+    productList.map((item) => All.find().lean())
   );
-  const data = alldata.flat();
-  cache.set("all", data);
+  cache.set("all", alldata);
 }
 
 cacheData();

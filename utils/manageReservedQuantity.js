@@ -1,4 +1,5 @@
 import { All } from "../model/products.js";
+import cache from "./cache.js";
 
 export const increaseReservedQuantity = async (req, res, next) => {
   const products = req.unwindedProductsFromDb;
@@ -12,12 +13,11 @@ export const increaseReservedQuantity = async (req, res, next) => {
         }
       );
     }
+    cache.flushAll();
     next();
   } catch {
     res.status(400).json("some error while setting the reserved quantity");
   }
 };
 
-export const stockUpdatePostPayment = (req, res) => {
-  
-};
+export const stockUpdatePostPayment = (req, res) => {};
