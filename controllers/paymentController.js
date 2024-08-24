@@ -2,6 +2,7 @@ import { v4 } from "uuid";
 import createHashedString from "../utils/createHash.js";
 import axios from "axios";
 import updateOrder from "../middlewares/updateOrder.middleware.js";
+import Orders from "../model/orders.js";
 
 function initiatePayment(req, res) {
   const { totalAmount, contactNumber, redirectPath, paymentUUID } = req.body;
@@ -84,14 +85,21 @@ async function paymentStatusHook(req, res) {
     }
     req.status = response.status;
     req.data = response.data;
-    updateOrder(req, res);
+    const { totalAmount: orderAmount } = await Orders.findById(transactionID, {
+      totalAmount: 1,
+      _id: 0,
+    });
+    if (!(orderAmount === response.data.data.amount / 100)) {
+      return res.status(400).json({
+        msg: "payment failed due to differences in amounts of total and paid.",
+      });
+    }
+    updateOrder(req, res); //if amounts matched call the updateOrder
   } catch (error) {
     req.error = error;
     res.status(400).send("Error in getting status update of order");
   }
 }
-
-
 
 async function paymentStatusChecker(req, res) {
   const { transactionID } = req.params;
@@ -122,7 +130,15 @@ async function paymentStatusChecker(req, res) {
     }
     req.status = response.status;
     req.data = response.data;
-
+    const { totalAmount: orderAmount } = await Orders.findById(transactionID, {
+      totalAmount: 1,
+      _id: 0,
+    });
+    if (!(orderAmount === response.data.data.amount / 100)) {
+      return res.status(400).json({
+        msg: "payment failed due to differences in amounts of total and paid.",
+      });
+    }
     if (req.status === 200 && req.data.code === "PAYMENT_SUCCESS") {
       res.status(200).send("Success");
     } else {
@@ -134,7 +150,10 @@ async function paymentStatusChecker(req, res) {
     }
   } catch (error) {
     req.error = error;
-    res.status(400).send("Error in getting status update of order");
+    console.log(error);
+    res
+      .status(400)
+      .send("catched Error : Problem in getting status update of order");
   }
 }
 

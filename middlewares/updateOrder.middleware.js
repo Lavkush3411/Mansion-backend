@@ -31,8 +31,6 @@ export default async function updateOrder(req, res) {
         })
       );
 
-      console.log(data);
-
       res.status(200).send("Success");
     } catch (e) {
       console.error(`Failed to update item`, e);
