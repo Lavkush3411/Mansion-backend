@@ -1,12 +1,16 @@
 import express from "express";
 import {
   initiatePayment,
-  paymentStatus,
+  paymentStatusChecker,
+  paymentStatusHook,
 } from "../controllers/paymentController.js";
 import createOrder from "../middlewares/createOrder.middleware.js";
 import { compareOrderAmount } from "../middlewares/compareOrderAmount.js";
 import { verifyToken } from "../middlewares/jwt.js";
-import { increaseReservedQuantity } from "../utils/manageReservedQuantity.js";
+import {
+  increaseReservedQuantity,
+  stockUpdatePostPayment,
+} from "../utils/manageReservedQuantity.js";
 import { checkAvailabilityForAllProducts } from "../middlewares/productAvailibilityChecker.js";
 export const paymentRouter = express.Router();
 paymentRouter
@@ -19,4 +23,8 @@ paymentRouter
     createOrder,
     initiatePayment
   );
-paymentRouter.route("/status/:transactionID").post(paymentStatus); //this route is post because this one is called by paytm webhook for updating payment status
+paymentRouter.route("/status-checker/:transactionID").get(paymentStatusChecker); // only for status check this route will not update the paymenst status in db
+// use below hook route if we need to update the payament status/stock in db
+paymentRouter
+  .route("/status-update-hook/:transactionID")
+  .post(paymentStatusHook, stockUpdatePostPayment); //this route is post because this one is called by paytm webhook for updating payment status

@@ -46,11 +46,5 @@ export const getProducts = async (req, res) => {
 };
 
 export const availabilityResponder = async (req, res) => {
-  // Create a match condition to find the products and relevant stock items
-  const errList = req.errList;
-  if (errList.length === 0) {
-    res.status(200).json({ availibility: true });
-  } else {
-    res.status(400).json({ availibility: false, msg: errList });
-  }
+  res.status(200).json({ availibility: true });
 };

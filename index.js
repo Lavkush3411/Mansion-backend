@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 import { indexRouter } from "./routes/indexRouter.js";
 import { gloabalCatch } from "./utils/gloabalCatch.js";
 import cookieParser from "cookie-parser";
-import { updateAllProducts } from "./test.js";
+import { testRouter } from "./test.js";
 dotenv.config();
 
 const app = express();
@@ -26,7 +26,7 @@ app.use(
   })
 );
 app.use("/", indexRouter);
-app.use("/test", updateAllProducts);
+app.use("/test", testRouter);
 
 app.use(gloabalCatch);
 

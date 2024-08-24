@@ -64,5 +64,10 @@ export const checkAvailabilityForAllProducts = async (req, res, next) => {
     }
   }
   req.errList = errList;
-  next();
+
+  if (errList.length > 0) {
+    res.status(400).json({ availibility: false, msg: errList });
+  } else {
+    next();
+  }
 };

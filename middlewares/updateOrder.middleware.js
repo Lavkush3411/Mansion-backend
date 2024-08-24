@@ -1,10 +1,38 @@
+import mongoose from "mongoose";
 import Orders from "../model/orders.js";
+import { ordersDb } from "../db.js";
 
 export default async function updateOrder(req, res) {
   if (req.status === 200 && req.data.code === "PAYMENT_SUCCESS") {
     const orderID = req.data.data.merchantTransactionId;
-    await Orders.findByIdAndUpdate(orderID, { orderStatus: "Success" });
-    res.status(200).send("Success");
+    // const session = await ordersDb.startSession();
+
+    try {
+      const order = await Orders.findByIdAndUpdate(
+        orderID,
+        { orderStatus: "Success" },
+        { new: true }
+      );
+      const products = order.products;
+
+      await Promise.all(
+        products.map((item) => {
+          Orders.findOneAndUpdate(
+            { _id: item._id, "stock.size": item.size },
+            {
+              $inc: {
+                "stock.$.quantity": -item.qty,
+                "stock.$.reservedQuantity": -item.qty,
+              },
+            }
+          );
+        })
+      );
+
+      res.status(200).send("Success");
+    } catch (e) {
+      console.error(`Failed to update item`, e);
+    }
   } else {
     if (req.data.code === "PAYMENT_PENDING") {
       const orderID = req.data.data.merchantTransactionId;

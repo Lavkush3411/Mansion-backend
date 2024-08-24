@@ -14,7 +14,8 @@ function initiatePayment(req, res) {
     redirectUrl: process.env.FRONTEND_HOME_URL + redirectPath,
     redirectMode: "REDIRECT",
     callbackUrl:
-      process.env.BACKEND_HOME_URL + `/payment/status/${paymentUUID}`,
+      process.env.BACKEND_HOME_URL +
+      `/payment/status-update-hook/${paymentUUID}`,
     mobileNumber: contactNumber,
     paymentInstrument: {
       type: "PAY_PAGE",
@@ -56,7 +57,43 @@ function initiatePayment(req, res) {
     });
 }
 
-async function paymentStatus(req, res) {
+async function paymentStatusHook(req, res) {
+  const { transactionID } = req.params;
+  const checksum =
+    createHashedString(
+      `/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/${transactionID}` +
+        process.env.PHONEPAY_SALT_KEY
+    ) +
+    "###" +
+    process.env.PHONEPAY_SALT_INDEX;
+  const options = {
+    method: "get",
+    url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${process.env.PHONEPAY_MERCHENTID}/${transactionID}`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-VERIFY": checksum,
+      "X-MERCHANT-ID": process.env.PHONEPAY_MERCHENTID,
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    if (response.data === "") {
+      throw new Error("Error in getting status update of order");
+    }
+    req.status = response.status;
+    req.data = response.data;
+    updateOrder(req, res);
+  } catch (error) {
+    req.error = error;
+    res.status(400).send("Error in getting status update of order");
+  }
+}
+
+
+
+async function paymentStatusChecker(req, res) {
   const { transactionID } = req.params;
   const checksum =
     createHashedString(
@@ -85,11 +122,20 @@ async function paymentStatus(req, res) {
     }
     req.status = response.status;
     req.data = response.data;
-    updateOrder(req, res);
+
+    if (req.status === 200 && req.data.code === "PAYMENT_SUCCESS") {
+      res.status(200).send("Success");
+    } else {
+      if (req.data.code === "PAYMENT_PENDING") {
+        res.status(200).send("Pending");
+      } else {
+        res.status(200).send("Failed");
+      }
+    }
   } catch (error) {
     req.error = error;
     res.status(400).send("Error in getting status update of order");
   }
 }
 
-export { initiatePayment, paymentStatus };
+export { initiatePayment, paymentStatusHook, paymentStatusChecker };
