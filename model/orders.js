@@ -21,7 +21,8 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  orderStatus: { type: String, required: true, default: "Initiated" },
+  orderStatus: { type: String, required: true, default: "Order Placed" },
+  paymentStatus: { type: String, required: true, default: "Initiated" },
   createdAt: {
     type: String,
     default: () =>

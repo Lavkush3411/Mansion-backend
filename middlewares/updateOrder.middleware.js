@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
 import Orders from "../model/orders.js";
-import { ordersDb } from "../db.js";
 import { All } from "../model/products.js";
 import cache from "../utils/cache.js";
 
@@ -12,7 +10,7 @@ export default async function updateOrder(req, res) {
     try {
       const order = await Orders.findByIdAndUpdate(
         orderID,
-        { orderStatus: "Success" },
+        { paymentStatus: "Success" },
         { new: true }
       );
       const products = order.products;
@@ -38,11 +36,11 @@ export default async function updateOrder(req, res) {
   } else {
     if (req.data.code === "PAYMENT_PENDING") {
       const orderID = req.data.data.merchantTransactionId;
-      await Orders.findByIdAndUpdate(orderID, { orderStatus: "Pending" });
+      await Orders.findByIdAndUpdate(orderID, { paymentStatus: "Pending" });
       res.status(200).send("Pending");
     } else {
       const orderID = req.data.data.merchantTransactionId;
-      await Orders.findByIdAndUpdate(orderID, { orderStatus: "Failed" });
+      await Orders.findByIdAndUpdate(orderID, { paymentStatus: "Failed" });
       res.status(200).send("Failed");
     }
   }
