@@ -41,3 +41,24 @@ export const getAllOrders = async (req, res) => {
     res.status(500).json("Some error occured while getting users data");
   }
 };
+
+export const deleteOrder = async (req, res) => {
+  const orderId = req.params.id;
+  if (!orderId) return res.status(404).json("No order ID Specified");
+  try {
+    const deletedOrder = await Orders.findByIdAndDelete(orderId);
+    if (!deletedOrder) throw new Error("Order with order ID not Found");
+    const pulledOrder = await User.findOneAndUpdate(
+      {
+        email: deletedOrder.userId,
+      },
+      {
+        $pull: { orders: orderId },
+      }
+    );
+    console.log(deletedOrder, pulledOrder);
+    res.status(200).json({ deletedOrder, pulledOrder });
+  } catch (err) {
+    res.status(404).json({ msg: err.message });
+  }
+};

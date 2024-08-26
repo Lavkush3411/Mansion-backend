@@ -2,6 +2,7 @@ import updateOrder from "./middlewares/updateOrder.middleware.js";
 import Orders from "./model/orders.js";
 import { All } from "./model/products.js";
 import express from "express";
+import User from "./model/users.js";
 
 export const testRouter = express.Router();
 
@@ -34,5 +35,16 @@ testRouter.patch("/update-paymentstatus/:id", async function (req, res) {
   updateOrder(req, res);
 });
 
+const deleteAllUsersOrder = async (req, res) => {
+  const data = await User.find();
+
+  for (let user of data) {
+    const doc = await User.findOneAndUpdate({ _id: user._id }, { orders: [] });
+    // console.log(doc);
+  }
+  res.json(data);
+};
+
+testRouter.delete("/deleteAllUserOrders", deleteAllUsersOrder);
 
 export { updateAllProducts };

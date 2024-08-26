@@ -26,7 +26,7 @@ app.use(
   })
 );
 app.use("/", indexRouter);
-app.use("/test", testRouter);
+// app.use("/test", testRouter);
 
 app.use(gloabalCatch);
 
