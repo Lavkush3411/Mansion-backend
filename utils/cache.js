@@ -5,9 +5,7 @@ const productList = ["cargos", "bottoms", "hoodies", "tshirts", "shirts"];
 const cache = new NodeCache({ stdTTL: 0 });
 async function cacheData() {
   cache.flushAll();
-  const alldata = await Promise.all(
-    productList.map((item) => All.find().lean())
-  );
+  const alldata = await All.find().lean();
   cache.set("all", alldata);
 }
 

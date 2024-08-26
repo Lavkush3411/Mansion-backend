@@ -24,8 +24,8 @@ export const getAllProducts = async (req, res) => {
     return;
   }
 
-  const alldata = await All.find().lean();
-  const data = alldata.flat();
+  const data = await All.find().lean();
+  console.log(data);
   res.send(data);
   cache.set("all", data);
 };

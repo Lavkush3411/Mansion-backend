@@ -24,19 +24,17 @@ export const userOrders = async function (req, res) {
 
   const ordersData = await Orders.find({
     _id: { $in: user.orders },
-  });
+  }).sort({ _id: -1 });
   res.send(ordersData);
 };
 
 export const getAllOrders = async (req, res) => {
   try {
-    const users = await Orders.find(
-      {},
-      { password: 0, isAdmin: 0, __v: 0, orders: 0 }
-    )
+    const orders = await Orders.find({}, { password: 0, isAdmin: 0, __v: 0 })
       .lean()
       .sort({ _id: -1 });
-    res.status(200).json(users);
+    console.log(orders);
+    res.status(200).json(orders);
   } catch {
     res.status(500).json("Some error occured while getting users data");
   }
