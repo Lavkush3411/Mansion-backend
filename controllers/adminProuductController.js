@@ -4,6 +4,7 @@ import fs from "fs";
 import cache, { cacheData } from "../utils/cache.js";
 import deleteProduct from "./deleteProduct.js";
 import { All } from "../model/products.js";
+import Orders from "../model/orders.js";
 
 export const addProduct = async (req, res) => {
   const productName = req.params.product;
@@ -82,7 +83,6 @@ export const updateProductController = async (req, res) => {
   if (!productId)
     return res.send("ProductId should be given inside when updating");
   try {
-  
     await All.findByIdAndUpdate(productId, {
       productName,
       productPrice,
@@ -97,5 +97,26 @@ export const updateProductController = async (req, res) => {
   } finally {
     cache.del("all");
     cacheData();
+  }
+};
+
+export const updateOrderStatus = async (req, res) => {
+  const { status, id } = req.body;
+  try {
+    await Orders.findByIdAndUpdate(id, { orderStatus: status });
+
+    res.status(200).json("status updated");
+  } catch (e) {
+    res.status(400).json("some error while updataing the status");
+  }
+};
+
+export const orderByID = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const data = await Orders.findById(id);
+    res.status(200).json(data);
+  } catch (e) {
+    res.status(400).json("some error while updataing the status");
   }
 };

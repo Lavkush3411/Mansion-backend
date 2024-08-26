@@ -2,6 +2,8 @@ import express from "express";
 import {
   addProduct,
   deleteProudctController,
+  orderByID,
+  updateOrderStatus,
   updateProductController,
 } from "../controllers/adminProuductController.js";
 import {
@@ -15,7 +17,8 @@ export const adminRouter = express.Router();
 
 adminRouter.delete("/delete/:type", deleteProudctController);
 adminRouter.delete("/order/:id", deleteOrder);
-
+adminRouter.get("/order/by-id/:id", orderByID);
+adminRouter.patch("/update-order-status", updateOrderStatus);
 adminRouter.post("/new/:product", addProduct);
 adminRouter.patch("/:product", updateProductController);
 adminRouter.get("/all", getAllProducts);
