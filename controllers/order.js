@@ -45,7 +45,6 @@ export const deleteOrder = async (req, res) => {
   if (!orderId) return res.status(404).json("No order ID Specified");
   try {
     const deletedOrder = await Orders.findByIdAndDelete(orderId);
-    await DeletedOrders.create(deletedOrder);
     if (!deletedOrder) throw new Error("Order with order ID not Found");
     const pulledOrder = await User.findOneAndUpdate(
       {
@@ -55,8 +54,11 @@ export const deleteOrder = async (req, res) => {
         $pull: { orders: orderId },
       }
     );
-    res.status(200).json({ deletedOrder, pulledOrder });
+    res.status(200).json({ pulledOrder });
+
+    await DeletedOrders.create(deletedOrder.toObject());
   } catch (err) {
-    res.status(404).json({ msg: err.message });
+    console.log(err);
+    res.status(405).json({ msg: err.message });
   }
 };
