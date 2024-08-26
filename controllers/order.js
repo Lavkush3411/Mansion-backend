@@ -1,4 +1,4 @@
-import Orders from "../model/orders.js";
+import Orders, { DeletedOrders } from "../model/orders.js";
 import zod from "zod";
 import User from "../model/users.js";
 
@@ -47,6 +47,7 @@ export const deleteOrder = async (req, res) => {
   if (!orderId) return res.status(404).json("No order ID Specified");
   try {
     const deletedOrder = await Orders.findByIdAndDelete(orderId);
+    await DeletedOrders.create(deletedOrder);
     if (!deletedOrder) throw new Error("Order with order ID not Found");
     const pulledOrder = await User.findOneAndUpdate(
       {
@@ -56,7 +57,6 @@ export const deleteOrder = async (req, res) => {
         $pull: { orders: orderId },
       }
     );
-    console.log(deletedOrder, pulledOrder);
     res.status(200).json({ deletedOrder, pulledOrder });
   } catch (err) {
     res.status(404).json({ msg: err.message });

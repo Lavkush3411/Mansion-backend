@@ -37,4 +37,7 @@ const orderSchema = new mongoose.Schema({
 
 const Orders = ordersDb.model("order", orderSchema);
 
+const DeletedOrders = ordersDb.model("deletedOrders", orderSchema);
+export { DeletedOrders };
+
 export default Orders;
