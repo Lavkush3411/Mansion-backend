@@ -35,3 +35,25 @@ export default async function sendEmail(to) {
     })
   );
 }
+
+export async function sendOrderPlacedEmail(to, order) {
+  const message = {
+    from: process.env.EMAIL,
+    to: to,
+    subject: `New Order Received`,
+    text: `New Order has been recieved for ${order}`,
+  };
+
+  return await new Promise((resolve, reject) =>
+    transporter.sendMail(message, (err) => {
+      if (err) {
+        reject({
+          status: 400,
+          error: err,
+          msg: "Some Error Encountered While sending order detils",
+        });
+      }
+      resolve({ status: 200, msg: "OTP sent", otp: OTP });
+    })
+  );
+}

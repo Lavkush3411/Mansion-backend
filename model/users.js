@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema({
     state: String,
     pincode: String,
     country: { type: String, default: "India" },
+    contact: String,
   },
   isAdmin: { type: Boolean, default: false },
   orders: { type: [mongoose.Schema.Types.ObjectId], default: [] },
